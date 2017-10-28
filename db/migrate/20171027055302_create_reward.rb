@@ -1,6 +1,6 @@
-class CreateRewardTiers < ActiveRecord::Migration[5.1]
+class CreateRewards < ActiveRecord::Migration[5.1]
   def change
-    create_table :reward_tiers do |t|
+    create_table :rewards do |t|
       t.string :pledge_requirement 
       t.string :name 
       t.text :description 
