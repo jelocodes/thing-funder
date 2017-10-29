@@ -6,7 +6,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :twitter
       t.string :facebook
       t.string :website
-
       t.timestamps
     end
   end
