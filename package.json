@@ -1,5 +1,13 @@
 {
-  "name": "fund_the_thing",
+  "name": "thing-funder-package",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jelocodes/thing-funder.git",
+  "author": "Michaelangelo Yambao <michaelangelo.yambao@gmail.com>",
+  "license": "MIT"
 }

@@ -1,14 +1,40 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FundTheThing</title>
+    <title>ThingFunder.com</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag :application %>
   </head>
 
   <body>
+  	<div class="container">
+  		<div class="row">
+
+  			<div class="col-sm-12 col-md-4 col-lg-4">
+  				<%if current_user %> 
+					<nav><a href="/users/<%=User.find(session[:user_id]).username%>">Home</a> <a href="/logout">| Log Out</a></nav>
+				<% else %>
+					<nav><a href="/">Home</a> <a href="/login">| Login</a> <a href="/signup">| Sign Up</a></nav>
+				<% end %>	
+  			</div>
+
+  			<div class="col-sm-12 col-md-4 col-lg-4">
+   				<%= image_tag("/thingfunder.png", size:'431x50', :class => "center-block") %> 			
+  			</div>
+
+  			<div class="col-sm-12 col-md-4 col-lg-4">
+  				<form name="search">
+  					<label class="search-box">
+    				<input type="text" />
+    				<span></span>
+  					</label> 
+				</form>
+  			</div>
+  		</div>
+  	</div>
+
     <%= yield %>
   </body>
 </html>
