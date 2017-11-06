@@ -17,9 +17,6 @@
 
  /*carousel*/
 
-@import "font-awesome-sprockets";
-@import "font-awesome";
-
  @media only screen and (min-width: 1200px) {
  	.carousel-caption {
  		top: 38%;
@@ -212,7 +209,7 @@
 }
 .post-module .post-content .category {
   position: absolute;
-  top: -34px;
+  top: -250px;
   left: 0;
   background: #68cacd;
   padding: 10px 15px;
@@ -308,4 +305,12 @@
 
 .projects {
   padding:20px;
+}
+
+.project_title {
+  text-align: center;
+}
+
+.progress-bar.project {
+  background-color: #68cacd;
 }

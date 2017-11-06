@@ -23,7 +23,9 @@ end
   Category.create(name: Faker::Commerce.department)
 end
 
-10.times do
+i = 1
+
+9.times do
   Project.create(
     user_id: Faker::Number.between(1, 20),
     name: Faker::Commerce.product_name,
@@ -38,9 +40,10 @@ end
               HEREDOC
   )
   ProjectCategory.create(
-    project_id: rand(1..20),
+    project_id: i,
     category_id: rand(1..100)
   )
+  i+= 1
 end
 
 
