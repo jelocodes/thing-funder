@@ -1,50 +1,88 @@
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+    	<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    	<li data-target="#myCarousel" data-slide-to="1"></li>
+    	<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner container-fluid">
-    <div class="item active">
-      <img src="https://images.unsplash.com/photo-1438109491414-7198515b166b?q=80&fm=jpg&s=cbdabf7a79c087a0b060670a6d79726c" alt="Photography">
-      <div class="carousel-caption">
-      	<h2>Fund your photography</h2>
-      	<p>Let the world help you share your vision.</p>
-      </div>
-    </div>
+ 	<!-- Wrapper for slides -->
+	<div class="carousel-inner container-fluid">
 
-    <div class="item">
-      <img src="/2.jpg" alt="Filming">
-      <div class="carousel-caption">
-      	<h2>Fund your music</h2>
-      	<p>Tap the crowd to get your voice out there.</p>
-      </div>
-    </div>
+    	<div class="item active">
+      	<img src="https://images.unsplash.com/photo-1438109491414-7198515b166b?q=80&fm=jpg&s=cbdabf7a79c087a0b060670a6d79726c" alt="Photography">
+      	<div class="carousel-caption">
+      		<h2>Fund your photography</h2>
+      		<p>Let the world help you share your vision.</p>
+      	</div>
+    	</div>
 
+    	<div class="item">
+      	<img src="/2.jpg" alt="Filming">
+      	<div class="carousel-caption">
+      		<h2>Fund your music</h2>
+      		<p>Tap the crowd to get your voice out there.</p>
+      	</div>
+    	</div>
 
-    <div class="item">
-      <img src="/1.jpg" alt="Teamwork" style="width:100%">
-      <div class="carousel-caption">
-      	<h2>Fund your thing</h2>
-      	<p>Whatever it is, fund and get funded with ThingFunder!</p>
-      </div>
-    </div>
+    	<div class="item">
+      	<img src="/1.jpg" alt="Teamwork" style="width:100%">
+      	<div class="carousel-caption">
+      		<h2>Fund your thing</h2>
+      		<p>Whatever it is, fund and get funded with ThingFunder!</p>
+      	</div>
+    	</div>
 
-   </div>
+	</div>
 
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-    <span class="sr-only">Next</span>
-  </a>
+ 	<!-- Left and right controls -->
+  	<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    	<span class="glyphicon glyphicon-chevron-left"></span>
+    	<span class="sr-only">Previous</span>
+  	</a>
+  	<a class="right carousel-control" href="#myCarousel" data-slide="next">
+    	<span class="glyphicon glyphicon-chevron-right"></span>
+    	<span class="sr-only">Next</span>
+  	</a>
 </div>
 
+<div class="projects">
+  <div class="row">
+  <% @projects.all.each do |project| %>
+    
+    <div class="col-sm-12 col-md-4 col-lg-4">
+    <div class="column">
+      <!-- Post-->
+      <div class="post-module">
+        <!-- Thumbnail-->
+        <div class="thumbnail">
+          <div class="date">
+<!--             <div class="day"><%= project.created_at.day %></div>
+            <div class="month"><%= project.created_at.strftime("%B") %></div> -->
+            <i class="fa fa-heart animated infinite pulse"></i>
+          </div>
+          <img src="https://placeimg.com/640/480/tech">
+        </div>
+        <!-- Project Content-->
+        <div class="post-content">
+          <div class="category">
+            <% if !!project.categories %>
+              <% project.categories.each do |category| %>
+                <p><%= category.name %></p>
+              <% end %>
+            <% else %>
+              <p>Unclassified</p>
+            <% end %>
+          </div>
+          <h1 class="title"><%= project.name %></h1>
+          <h2 class="sub_title">By <%= project.user.username %></h2>
+          <p class="description"><%= project.about %></p>
+          <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> <%= (project.deadline - project.created_at.to_date).to_i %> days left </span><span class="comments"><i class="fa fa-comments"></i><a href="#"><%= project.comments.size %> comments</a></span></div>
+        </div>
+      </div>
+    </div>
 
-
+    </div>
+  <% end %>
+  </div>
+</div>

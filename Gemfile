@@ -55,6 +55,8 @@ gem 'devise'
 gem 'pundit'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
+gem 'faker'
+gem 'font-awesome-sass'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
