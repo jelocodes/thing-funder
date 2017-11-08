@@ -209,7 +209,7 @@
 }
 .post-module .post-content .category {
   position: absolute;
-  top: -250px;
+  top: -224px;
   left: 0;
   background: #68cacd;
   padding: 10px 15px;
@@ -313,4 +313,8 @@
 
 .progress-bar.project {
   background-color: #68cacd;
+}
+
+.btn-info {
+  float:right;
 }

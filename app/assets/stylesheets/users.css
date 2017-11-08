@@ -1,0 +1,46 @@
+/*// Place all the styles related to the Users controller here.
+/** They will automatically be included in application.css.
+/* You can use Sass (SCSS) here: http://sass-lang.com/*/
+
+.new_user {
+	text-align: center;
+}
+
+.text-strikethru {
+	position: relative;
+	text-align: center;
+}
+
+.text-strikethru .line {
+	height: 1px;
+	background-color: #F1EEEA;
+	width: 90%;
+	margin-left: 5%;
+}
+
+.text-strikethru .text {
+	display: inline-block;
+	background=color: #FFFFFF;
+	padding: 5px 10px;
+	font-size: 14px;
+	top: -16px;
+	position: relative;
+	color: #3D3D66;
+}
+
+.form-container {
+	max-width:400px;
+	margin: 0 auto;
+}
+
+.form-container input {
+	padding: 5px;
+}
+
+div.actions {
+	margin:20px;
+}
+
+div#error_explanation li {
+	list-style:none;
+}

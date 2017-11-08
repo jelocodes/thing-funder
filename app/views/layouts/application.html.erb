@@ -16,7 +16,7 @@
   				<%if current_user %> 
 					<nav><a href="/users/<%=User.find(session[:user_id]).username%>">Home</a> <a href="/logout">| Log Out</a></nav>
 				<% else %>
-					<nav><a href="/">Home</a> <a href="/login">| Login</a> <a href="/signup">| Sign Up</a></nav>
+					<nav><a href="/">Home</a> <a href="/login">| Login</a> <%= link_to("| Sign Up", new_user_registration_path) %></nav>
 				<% end %>	
   			</div>
 

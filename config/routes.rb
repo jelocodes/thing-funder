@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   resources :rewards
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :updates do
   	resources :comments 
