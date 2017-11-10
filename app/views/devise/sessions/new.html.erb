@@ -1,4 +1,6 @@
-<h2>Log in</h2>
+<div class="form-container">
+ 
+<h2 class="user">Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
@@ -23,4 +25,71 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<div class="devise-links">
+  <%= render "devise/shared/links" %>
+</div>
+
+
+</div>
+
+<!-- === -->
+
+<!-- <div class="form-container">
+
+  <h2 class="new_user">Sign up</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+  
+  <div class="field">
+    <%= f.email_field :email, autofocus: true, placeholder: "Enter your Email" %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :username, autofocus: true, placeholder: "Enter a Username" %>
+  </div>
+
+  <div class="field">
+    <%= f.password_field :password, autocomplete: "off", placeholder: "Enter a Password" %>
+  </div>
+
+  <div class="field">
+    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Re-enter password" %>
+  </div>
+
+  <div class="field">
+    <%= f.text_area :bio, cols: 30, rows: 5, placeholder: "Enter a short bio" %>
+  </div>
+
+  <h4>Get Social:</h4>
+
+  <div class="field">
+    <%= f.text_field :twitter, autofocus: true, placeholder: "Your @twitter handle" %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :facebook, autofocus: true, placeholder: "Your FB URL" %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :website, autofocus: true, placeholder: "Your website" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Create account" %>
+  </div>
+
+  <div class="text-strikethru">
+    <div class="line"></div>
+    <div class="text">or</div>
+  </div>
+
+  <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
+
+</div>
+
+<% end %>
+
+
+
+ -->

@@ -2,7 +2,7 @@
 /** They will automatically be included in application.css.
 /* You can use Sass (SCSS) here: http://sass-lang.com/*/
 
-.new_user {
+.user {
 	text-align: center;
 }
 
@@ -30,7 +30,10 @@
 
 .form-container {
 	max-width:400px;
-	margin: 0 auto;
+	margin: 20px auto;
+	background-color: #f3f5f3;
+	padding: 10px;
+	border-radius: 2.85%;
 }
 
 .form-container input {
@@ -43,4 +46,16 @@ div.actions {
 
 div#error_explanation li {
 	list-style:none;
+}
+
+.field {
+	margin: 15px;
+}
+
+textarea {
+	width: 100%;
+}
+
+.form-container input {
+  width:100%;
 }
