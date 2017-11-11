@@ -1,0 +1,71 @@
+<div class="form-container">
+ 
+<h2 class="user">Create A New Project</h2>
+
+<%= form_for @project do |f| %>
+	<div class="field">
+    <%= f.label :name %>
+		<%= f.text_field :name, placeholder: "Enter your project's name" %>
+	</div>
+
+  <div class="field">
+    <%= f.label :about %>
+    <%= f.text_area :about, cols: 30, rows: 5, placeholder: "Tell the world what your project's about." %>
+  </div>
+
+  <div class="field">
+    <%= f.label :goal %>
+    <%= f.number_field :goal, placeholder: "USD amount you'd like to raise for your project?" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :faq %>
+    <%= f.text_area :faq, cols: 30, rows: 5, placeholder: "What are some Frequently Asked Questions about your project?" %>
+  </div>  
+
+  <div class="field">
+    <%= f.label :risk_and_challenges %>
+    <%= f.text_area :risk_and_challenges, cols: 30, rows: 5, placeholder: "What are some risks and challenges that your project can face?" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :deadline %> 
+    <p>Set a deadline for when your project's funding period ends.</p>
+    <%= f.date_field :deadline %>
+  </div>
+
+  <h3 class="user">Set Reward Tiers</h3>
+
+  <h4 class="user">Reward Tier 1</h4>
+
+  <div class="reward-tiers">  
+
+    <div class="first">
+      <%= form_for @reward do |f| %>
+        <%= f.hidden_field :project_id, :value => "#{Project.last.id + 1}".to_i %>
+
+        <div class="field">
+          <%= f.label :name %>     
+          <%= f.text_field :name, placeholder: "Enter reward's name" %>     
+        </div>
+
+        <div class="field">
+          <%= f.label :description %>
+          <%= f.text_area :description, placeholder: "Describe what donors will get with this reward." %>      
+        </div>
+
+        <div class="field">
+          <%= f.label :pledge_requirement %>
+          <%= f.number_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
+        </div>
+      <% end %>
+    </div> 
+
+  </div>
+  <button class="more-reward user">Add Another Reward</button>
+
+<% end %>
+
+</div>
+
+<%= javascript_include_tag "application", "data-turbolinks-track" => "reload" %>

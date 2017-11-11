@@ -6,6 +6,8 @@ class ProjectsController < ApplicationController
 
 	def new 
 		@project = Project.new
+		@reward = Reward.new
+		@category = Category.new
 	end
 
 	def create 

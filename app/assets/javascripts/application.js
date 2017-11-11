@@ -15,4 +15,15 @@
 //= require turbolinks
 //= require_tree .
 
+$(document).ready(function() {
+	// add new reward form
 
+	let i = 2;
+	const thing = $('.first').html();
+
+	$('.more-reward.user').unbind().click(function(event){  // need to unbind click actions to prevent them from repeating
+  		event.preventDefault();
+  		$('.reward-tiers').append("<h4 class='user'>Reward Tier" + `${i}` + "</h4>" + thing);
+		i++;
+	});
+});

@@ -59,3 +59,11 @@ textarea {
 .form-container input {
   width:100%;
 }
+
+input[type="checkbox"] {
+  width: 5%;
+}
+
+.devise-links {
+  text-align: center;
+}
