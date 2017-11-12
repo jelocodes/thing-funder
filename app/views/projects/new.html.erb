@@ -3,6 +3,8 @@
 <h2 class="user">Create A New Project</h2>
 
 <%= form_for @project do |f| %>
+  <%= f.hidden_field :user_id, :value => "#{current_user.id}" %>
+
 	<div class="field">
     <%= f.label :name %>
 		<%= f.text_field :name, placeholder: "Enter your project's name" %>
@@ -41,28 +43,33 @@
   <div class="reward-tiers">  
 
     <div class="first">
-      <%= form_for @reward do |f| %>
-        <%= f.hidden_field :project_id, :value => "#{Project.last.id + 1}".to_i %>
+      <%= f.fields_for :rewards do |reward| %>
 
         <div class="field">
-          <%= f.label :name %>     
-          <%= f.text_field :name, placeholder: "Enter reward's name" %>     
+          <%= reward.label :name %>     
+          <%= reward.text_field :name, placeholder: "Enter reward's name" %>     
         </div>
 
         <div class="field">
-          <%= f.label :description %>
-          <%= f.text_area :description, placeholder: "Describe what donors will get with this reward." %>      
+          <%= reward.label :description %>
+          <%= reward.text_area :description, placeholder: "Describe what donors will get with this reward." %>      
         </div>
 
         <div class="field">
-          <%= f.label :pledge_requirement %>
-          <%= f.number_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
+          <%= reward.label :pledge_requirement %>
+          <%= reward.text_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
         </div>
+
       <% end %>
     </div> 
 
   </div>
-  <button class="more-reward user">Add Another Reward</button>
+
+  <div class="field">
+    <button class="more-reward user">Add Another Reward</button>   
+  </div>
+
+  <%= f.submit %>
 
 <% end %>
 

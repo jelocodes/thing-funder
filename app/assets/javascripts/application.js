@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 	$('.more-reward.user').unbind().click(function(event){  // need to unbind click actions to prevent them from repeating
   		event.preventDefault();
-  		$('.reward-tiers').append("<h4 class='user'>Reward Tier" + `${i}` + "</h4>" + thing);
+  		$('.reward-tiers').append("<h4 class='user'>Reward Tier " + `${i}` + "</h4>" + thing);
 		i++;
 	});
 });
