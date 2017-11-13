@@ -25,5 +25,21 @@ $(document).ready(function() {
   		event.preventDefault();
   		$('.reward-tiers').append("<h4 class='user'>Reward Tier " + `${i}` + "</h4>" + thing);
 		i++;
+		$.ajax({
+			url: '/rewards',
+			type: 'POST',
+			data: {
+				reward: {
+				project_id: $('input#project_rewards_attributes_0_project_id').val(), 
+				name: $(`input[placeholder="Enter reward's name"]`).last().val(), 
+				description: $(`textarea[placeholder="Describe what donors will get with this reward."]`).last().val(), 
+				pledge_requirement: $(`input[placeholder="Enter the amount required to avail this reward."]`).last().val()}},
+			success: function(data) {
+				alert("Successful");				
+			},
+			failure: function() {
+				alert("Unsuccessful");
+			}
+		});
 	});
 });

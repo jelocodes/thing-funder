@@ -32,6 +32,7 @@ i = 1
     about: 'This product is great. You should fund it.',
     risk_and_challenges: 'Nothing at all.',
     deadline: Faker::Date.forward(360),
+    published: true,
     faq:     <<-HEREDOC
                 Q: Are FAQs useful? 
                 A: Yes. Yes they are.
