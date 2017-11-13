@@ -16,9 +16,11 @@ class ProjectsController < ApplicationController
 
 	def edit 
 		@project = Project.find(params[:id])
-		@project.rewards.build(name: "Enter your first reward's name");
-		@project.rewards.build(name: "Enter your second reward's name");
-		@project.rewards.build(name: "Enter your third reward's name");
+		if @project.rewards.size == 0
+			@project.rewards.build(name: "")
+			@project.rewards.build(name: "")
+			@project.rewards.build(name: "")
+		end
 	end
 
 	def update 

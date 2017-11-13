@@ -318,3 +318,13 @@
 .btn-info {
   float:right;
 }
+
+/*rewards*/
+
+.reward-strikethru {
+    height: 2px;
+    background-color: #e2dede;
+    width: 98%;
+    margin-left: 5%;
+    margin: 20px 0;
+}
