@@ -1,0 +1,71 @@
+<div class="wrapper">
+
+<div class="row">
+	<div class="col-md-4 maker">
+		<h4>By <%= @project.user.username %></h4>	
+		<%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %>
+	</div>
+
+	<div class="col-md-7 maker">
+		<h1><%= @project.name %></h1>
+		<p><%= @project.tagline %></p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+    	<div class="card">
+        	<ul class="nav nav-tabs" role="tablist">
+            	<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Campaign</a></li>
+            	<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">FAQ</a></li>
+            	<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Updates</a></li>
+            	<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Comments</a></li>
+        	</ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                	<h2>About</h2>
+                	<%= @project.about.html_safe %>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="profile">
+ 					<%= @project.faq.html_safe %>        	
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+                	<% @project.updates.each do |update| %>
+						<%= update.content %>
+					<% end %>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="settings">
+					<% @project.comments.each do |comment| %>
+						<h4><%= image_tag gravatar_url(current_user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
+						<p><%= comment.content %></p>						
+					<% end %>
+                </div>
+            </div>
+		</div>
+    </div>
+    <div class="col-md-3">
+    	<h2>Support this!</h2>
+		<div class="progress">
+        	<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">70% funded</div>
+        </div>
+        <h3>$700</h3>
+        <p>pledged out of $1000 total</p>
+        <h3>20</h3>
+        <p>backers</p>
+		<h3><%= (@project.deadline - @project.created_at.to_date).to_i %></h3>
+		<p>days to go</p>
+   		<% @project.rewards.each do |reward| %>
+   			<div class="card">
+ 				<h3><%= reward.name %></h3> 	
+ 				<p><%= reward.pledge_requirement %></p>	
+ 				<p><%= reward.description %></p>	
+ 				<%= link_to "DONATE", "#", :class => "btn blue" %>		
+   			</div>
+    	<% end %> 		
+    </div>
+</div>
+
+</div>

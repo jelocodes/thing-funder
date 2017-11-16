@@ -209,8 +209,8 @@
 }
 .post-module .post-content .category {
   position: absolute;
-  top: -224px;
-  left: 0;
+  top: -32px;
+  right: 0;
   background: #68cacd;
   padding: 10px 15px;
   color: #FFFFFF;
@@ -246,7 +246,7 @@
   margin: 0 16px 0 0;
 }
 .post-module .post-content .post-meta a {
-  color: #999999;
+  color: #FFFFFF;
   text-decoration: none;
 }
 .hover .post-content .description {
@@ -327,4 +327,97 @@
     width: 98%;
     margin-left: 5%;
     margin: 20px 0;
+}
+
+/*buttons*/
+
+.btn {
+  border-radius: 5px;
+  padding: 15px 25px;
+  font-size: 22px;
+  text-decoration: none;
+  margin: 17px;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+}
+
+.btn:active {
+  transform: translate(0px, 5px);
+  -webkit-transform: translate(0px, 5px);
+  box-shadow: 0px 1px 0px 0px;
+}
+
+.blue {
+  background-color: #6ccacc;
+  box-shadow: 0px 5px 0px 0px #10464a;
+}
+
+.blue:hover {
+  background-color: #92dadb;
+}
+
+/*project tabs*/
+
+.nav-tabs { 
+  border-bottom: 2px 
+  solid #DDD; 
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { 
+  border-width: 0; 
+}
+
+.nav-tabs > li > a { 
+  border: none; 
+  color: #666; 
+}
+        
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover { 
+  border: none; 
+  color: #4285F4 !important; 
+  background: transparent; 
+}
+
+.nav-tabs > li > a::after { 
+  content: ""; 
+  background: #4285F4; 
+  height: 2px; 
+  position: absolute; 
+  width: 100%; 
+  left: 0px; 
+  bottom: -1px; 
+  transition: all 250ms ease 0s; transform: scale(0); 
+}
+
+.nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { 
+  transform: scale(1); 
+}
+
+.tab-nav > li > a::after { 
+  background: #21527d none repeat scroll 0% 0%; 
+  color: #fff; 
+}
+
+.tab-pane { 
+  padding: 15px 0; 
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.card { 
+  background: #FFF none repeat scroll 0% 0%; 
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); 
+  margin: 10px 10px 30px 5px; 
+  padding: 7%;
+}
+
+.wrapper {
+  padding: 2% 4%;
+}
+
+.maker {
+  margin:14px;
 }
