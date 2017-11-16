@@ -7,11 +7,12 @@ class CommentsController < ApplicationController
 	end 
 
 	def create 
+		@commentable = Project.find(params[:comment][:commentable_id])
 		@comment = @commentable.comments.new(comment_params) 
 		if @comment.save 
-			redirect_to :back, notice: 'Your comment was successfully posted!'
+			redirect_to session.delete(:return_to), notice: 'Your comment was successfully posted!'
 		else 
-			redirect_to :back, notice: "Your comment wasn't posted! Try again!"
+			redirect_to session.delete(:return_to), notice: "Your comment wasn't posted! Try again!"
 		end
 	end
 
@@ -32,12 +33,12 @@ class CommentsController < ApplicationController
 	private 
 
 	def comment_params 
-		params.require(:comment).permit(:content)
+		params.require(:comment).permit(:content, :user_id, :commentable_id)
 	end
 
     def find_commentable
       @commentable = Comment.find_by_id(params[:comment_id]) if params[:comment_id]
-      @commentable = Story.find_by_id(params[:story_id]) if params[:story_id]
+      @commentable = Project.find_by_id(params[:project_id]) if params[:comment][:project_id]
     end
 
 end

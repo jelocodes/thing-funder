@@ -3,7 +3,8 @@
 <div class="row">
 	<div class="col-md-4 maker">
 		<h4>By <%= @project.user.username %></h4>	
-		<%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %>
+		<!-- <%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %> -->
+		<%= image_tag gravatar_url(@project.user, 64), alt: "Profile picture" %>
 	</div>
 
 	<div class="col-md-7 maker">
@@ -38,8 +39,21 @@
 					<% end %>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="settings">
+
+					<% if current_user %>
+						<%= form_for @comment do |f| %>
+  							<%= f.hidden_field :user_id, :value => "#{current_user.id}" %>
+  							<%= f.hidden_field :commentable_id, :value => "#{@project.id}" %>
+
+    						<%= f.text_area :content, cols: 30, rows: 5, placeholder: "Comment on this project." %>
+
+  							<%= f.submit "Submit Comment" %>
+						<% end %>
+						<br>
+					<% end %>
+
 					<% @project.comments.each do |comment| %>
-						<h4><%= image_tag gravatar_url(current_user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
+						<h4><%= image_tag gravatar_url(comment.user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
 						<p><%= comment.content %></p>						
 					<% end %>
                 </div>

@@ -6,6 +6,8 @@ class ProjectsController < ApplicationController
 
 	def show 
 		@project = Project.find(params[:id])
+		@comment = Comment.new
+		session[:return_to] ||= request.referer
 	end
 
 	def new 
