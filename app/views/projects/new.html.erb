@@ -3,6 +3,14 @@
 <h2 class="user">Create A New Project</h2>
 
 <%= form_for @project do |f| %>
+
+  <% if @project.errors.any? %>
+    <h3>Errors:</h3>
+    <% @project.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  <% end %>
+
   <%= f.hidden_field :user_id, :value => "#{current_user.id}" %>
   <%= f.hidden_field :published, :value => false %>
 
@@ -10,6 +18,11 @@
     <%= f.label :name %>
 		<%= f.text_field :name, placeholder: "Enter your project's name" %>
 	</div>
+
+  <div class="field">
+    <%= f.label :tagline %>
+    <%= f.text_field :tagline, placeholder: "Enter a tagline for your project" %>
+  </div>
 
   <div class="field">
     <%= f.label :about %>
@@ -38,7 +51,16 @@
   </div>
 
   <div class="field">
+    <%= f.label :category %> 
+    <p>Select a category that your project fits into.</p>
     <%= f.collection_select :category_ids, Category.all, :id, :name %><br>
+  </div>
+
+  <div class="field">
+    <%= f.label "Create a New Category"%>
+    <%= f.fields_for :categories, @project.categories.build do |category_fields| %>
+    <%= category_fields.text_field :name, id: 'Name', placeholder: 'Enter a name for your new category' %>
+    <% end %>
   </div>
 
   <%= f.submit "Next" %>

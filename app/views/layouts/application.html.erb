@@ -17,7 +17,7 @@
           <!-- make finding current user by find session[:user_id]  -->
           
 
-					<nav><%= link_to('Home ', root_path)%><%= link_to('| Create Project ', new_project_path)%><%= link_to('| Logout', destroy_user_session_path, method: :delete) %></nav>  
+					<nav><%= link_to('Home ', root_path)%><%= link_to('| Your Projects ', user_projects_path)%><%= link_to('| Create Project ', new_project_path)%><%= link_to('| Logout', destroy_user_session_path, method: :delete) %></nav>  
 				<% else %>
 					<nav><a href="/">Home</a> <%= link_to("| Login", new_user_session_path) %> <%= link_to("| Sign Up", new_user_registration_path) %></nav>
 				<% end %>	

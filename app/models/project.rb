@@ -6,4 +6,5 @@ class Project < ApplicationRecord
 	has_many :comments, as: :commentable
   	has_many :project_categories
   	has_many :categories, through: :project_categories
+  	validates_presence_of :name, :tagline, :about, :goal, :deadline 	
 end

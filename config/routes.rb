@@ -17,10 +17,9 @@ Rails.application.routes.draw do
   resources :projects do
   	resources :comments
     resources :updates
+    get :finish
   end
 
-  # devise_scope :user do
-  #   delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-  # end
+  get 'user_projects', :to => 'projects#user_projects'
   
 end

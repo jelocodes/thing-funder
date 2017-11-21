@@ -8,7 +8,7 @@ class RegistrationsController < Devise::RegistrationsController
   	if resource.save 
   		User.last.update(user_params)
   		current_user = User.last
-	end
+	  end
   end
 
   def update

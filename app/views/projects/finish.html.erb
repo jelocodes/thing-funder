@@ -1,0 +1,43 @@
+<div class="form-container">
+ 
+<h2 class="user">Set Reward Tiers</h2>
+
+<%= form_for @project do |f| %>
+
+  <div class="reward-tiers">  
+
+    <div class="first">
+      <%= f.fields_for :rewards do |reward| %>
+        <%= reward.hidden_field :project_id, :value => "#{@project.id}" %>
+
+        <div class="field">
+          <%= reward.label :name %>     
+          <%= reward.text_field :name, placeholder: "Enter reward's name" %>     
+        </div>
+
+        <div class="field">
+          <%= reward.label :description %>
+          <%= reward.text_area :description, placeholder: "Describe what donors will get with this reward." %>      
+        </div>
+
+        <div class="field">
+          <%= reward.label :pledge_requirement %>
+          <%= reward.text_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
+
+          <div class="reward-strikethru">
+            <div class="line"></div>
+          </div>
+        </div>
+
+      <% end %>
+    </div> 
+
+  </div>
+
+  <%= f.submit "Create Project" %>
+
+<% end %>
+
+</div>
+
+<%= javascript_include_tag "application", "data-turbolinks-track" => "reload" %>

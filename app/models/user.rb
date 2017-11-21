@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :comments
   has_many :user_rewards
   has_many :rewards, through: :user_rewards
+  validates_uniqueness_of :username
+  validates_presence_of :username
 
 
 	def guest?

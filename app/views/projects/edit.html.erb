@@ -1,12 +1,56 @@
 <div class="form-container">
- 
-<h2 class="user">Set Reward Tiers</h2>
 
 <%= form_for @project do |f| %>
 
-<!--   <h4 class="user">Reward Tier 1</h4> -->
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: "Enter your project's name" %>
+  </div>
 
-  <div class="reward-tiers">  
+  <div class="field">
+    <%= f.label :tagline %>
+    <%= f.text_field :tagline, placeholder: "Enter a tagline for your project" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :about %>
+    <%= f.text_area :about, cols: 30, rows: 5, placeholder: "Tell the world what your project's about." %>
+  </div>
+
+  <div class="field">
+    <%= f.label :goal %>
+    <%= f.number_field :goal, placeholder: "USD amount you'd like to raise for your project?" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :faq %>
+    <%= f.text_area :faq, cols: 30, rows: 5, placeholder: "What are some Frequently Asked Questions about your project?" %>
+  </div>  
+
+  <div class="field">
+    <%= f.label :risk_and_challenges %>
+    <%= f.text_area :risk_and_challenges, cols: 30, rows: 5, placeholder: "What are some risks and challenges that your project can face?" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :deadline %> 
+    <p>Set a deadline for when your project's funding period ends.</p>
+    <%= f.date_field :deadline %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category %> 
+    <p>Select a category that your project fits into.</p>
+    <%= f.collection_select :category_ids, Category.all, :id, :name %><br>
+  </div>
+
+  <div class="reward-strikethru">
+    <div class="line"></div>
+  </div>
+
+  <div class="reward-tiers"> 
+
+  <h2 class="user">Set Reward Tiers</h2> 
 
     <div class="first">
       <%= f.fields_for :rewards do |reward| %>
@@ -40,7 +84,7 @@
     <button class="more-reward user">Add Another Reward</button>   
   </div> -->
 
-  <%= f.submit "Create Project" %>
+  <%= f.submit "Update Project" %>
 
 <% end %>
 

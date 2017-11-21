@@ -17,7 +17,11 @@ class ProjectsController < ApplicationController
 
 	def create 
 	    @project = Project.create(project_params)
-    	redirect_to edit_project_path(@project)
+	    if @project.errors.size == 0
+    		redirect_to project_finish_path(@project)
+    	else
+    		render 'new'
+    	end
 	end
 
 	def edit 
@@ -29,15 +33,25 @@ class ProjectsController < ApplicationController
 		end
 	end
 
+	def finish
+		@project = Project.find(params[:project_id])
+		if @project.rewards.size == 0
+			@project.rewards.build(name: "")
+			@project.rewards.build(name: "")
+			@project.rewards.build(name: "")
+		end
+	end
+
 	def update 
+		# authorize @project
 		@project = Project.find(params[:id])
 		if @project.update_attributes(project_params)
 			@project.update(published: true)
 			redirect_to root_path
 		else
-			redirect_to edit_project_path(@project)
+			# redirect_to edit_project_path(@project)
+			redirect_to :back
 		end
-		# authorize @project
 		# perform an update
 	end
 
@@ -45,6 +59,11 @@ class ProjectsController < ApplicationController
 		@project = Project.find(params[:id])
 		authorize @project
 		# delete project
+	end
+
+	def user_projects 
+		@started_projects = current_user.projects
+		@funded_projects = nil
 	end
 
 	private 
