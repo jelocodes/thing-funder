@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
 	def user_projects 
 		@started_projects = current_user.projects
 		@funded_projects = nil
+		
 	end
 
 	private 

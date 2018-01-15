@@ -421,3 +421,11 @@
 .maker {
   margin:14px;
 }
+
+.field_error {
+  color: red;
+}
+
+h3.field_error {
+  text-align:center;
+}
