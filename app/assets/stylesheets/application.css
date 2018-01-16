@@ -422,10 +422,12 @@
   margin:14px;
 }
 
-.field_error {
-  color: red;
+/*errors*/
+
+.field_error, #error_explanation {
+  color: #e45555;
 }
 
-h3.field_error {
+h3.field_error, #error_explanation h2 {
   text-align:center;
 }
