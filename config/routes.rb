@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    resources :projects
+    resources :projects, only: [:new, :create, :edit, :update, :show, :delete]
   end
 
   resources :projects do
@@ -22,6 +22,6 @@ Rails.application.routes.draw do
     get :finish
   end
 
-  get 'user_projects', :to => 'projects#user_projects'
+  get "users/:user_id/projects" => "projects#user_projects"
   
 end
