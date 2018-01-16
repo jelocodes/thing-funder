@@ -357,6 +357,10 @@
   background-color: #92dadb;
 }
 
+#sort-button {
+  text-align:center;
+}
+
 /*project tabs*/
 
 .nav-tabs { 
