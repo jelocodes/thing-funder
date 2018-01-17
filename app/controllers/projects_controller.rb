@@ -1,7 +1,16 @@
 class ProjectsController < ApplicationController
 
 	def index 
-		@projects = Project.all
+		if params[:sort] === "newest"
+			@projects = Project.published.recent
+		elsif params[:sort] === "popular"
+			@projects = Project.joins(:comments).all
+		elsif params[:sort] === "time_running_out"
+			@projects = Project.time_running_out
+		else
+			@projects = Project.all
+		end
+		# raise params
 	end
 
 	def show 
@@ -63,8 +72,11 @@ class ProjectsController < ApplicationController
 
 	def user_projects 
 		@started_projects = current_user.projects
-		@funded_projects = nil
-		
+		@funded_projects = nil		
+	end
+
+	def filter 
+		redirect_to :back
 	end
 
 	private 

@@ -426,6 +426,14 @@
   margin:14px;
 }
 
+.col-sm {
+  float:left;
+}
+
+div#sort-button.container {
+  width: 52%;
+}
+
 /*errors*/
 
 .field_error, #error_explanation {
