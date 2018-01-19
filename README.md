@@ -1,6 +1,6 @@
 # thingfunder.com
 
-ThingFunder was a project conceptualized as a crowdfunding decentralized application that would backers to fund projects through the Ethereum blockchain. For now, it's a Rails app that demonstrates the basic CRUD functionality of a crowdfunding platform. Users can sign up (via email or via Facebook using oAuth), create projects, edit their created projects, and view and comment on the projects of others. It uses Rails for the back-end and ActiveRecord for the database.
+ThingFunder was a project conceptualized as a crowdfunding decentralized application that would let backers fund projects through the Ethereum blockchain. For now, it's a Rails app that demonstrates the basic CRUD functionality of a crowdfunding platform. Users can sign up (via email or via Facebook using oAuth), create projects, edit their created projects, and view and comment on the projects of others. It uses Rails for the back-end and ActiveRecord for the database.
 
 # Installation & Usage
 
