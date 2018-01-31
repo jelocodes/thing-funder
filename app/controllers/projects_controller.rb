@@ -25,7 +25,10 @@ class ProjectsController < ApplicationController
 	end
 
 	def create 
+		# raise params
 	    @project = Project.create(project_params)
+	    @project.categories.create(name: params["project"]["categories"]["name"]) unless params["project"]["categories"]["name"].blank?
+
 	    if @project.errors.size == 0
     		redirect_to project_finish_path(@project)
     	else
@@ -86,6 +89,8 @@ class ProjectsController < ApplicationController
 			:user_id,
 			:name,
 			:category_ids,
+			:tagline,
+			:categories,
 			:about,
 			:faq,
 			:goal,

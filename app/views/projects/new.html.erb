@@ -6,9 +6,6 @@
 
   <% if @project.errors.any? %>
     <h3 class="field_error">Oops! Errors found.</h3>
-<!--     <% @project.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %> -->
   <% end %>
 
   <%= f.hidden_field :user_id, :value => "#{current_user.id}" %>
@@ -60,14 +57,14 @@
   <div class="field">
     <%= f.label :category %> 
     <p>Select a category that your project fits into.</p>
-    <%= f.collection_select :category_ids, Category.all, :id, :name %><br>
+    <%= f.collection_select :category_ids, Category.all, :id, :name, include_blank: true %><br>
      <p class="field_error"><%= @project.errors[:category] if !@project.errors[:category].blank? %></p>
   </div>
 
   <div class="field">
-    <%= f.label "Create a New Category"%>
+    <%= f.label "And/or Create a New Category"%>
     <%= f.fields_for :categories, @project.categories.build do |category_fields| %>
-    <p class="field_error"><%= category_fields.text_field :name, id: 'Name', placeholder: 'Enter a name for your new category' %></p>
+    <%= category_fields.text_field :name, id: 'Name', placeholder: 'Enter a name for your new category' %>
     <% end %>
   </div>
 
