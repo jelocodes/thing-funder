@@ -10,7 +10,6 @@ class ProjectsController < ApplicationController
 		else
 			@projects = Project.all
 		end
-		# raise params
 	end
 
 	def show 
@@ -25,9 +24,8 @@ class ProjectsController < ApplicationController
 	end
 
 	def create 
-		# raise params
 	    @project = Project.create(project_params)
-	    @project.categories.create(name: params["project"]["categories"]["name"]) unless params["project"]["categories"]["name"].blank?
+	    @project.categories.create(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
 
 	    if @project.errors.size == 0
     		redirect_to project_finish_path(@project)
@@ -38,11 +36,11 @@ class ProjectsController < ApplicationController
 
 	def edit 
 		@project = Project.find(params[:id])
-		if @project.rewards.size == 0
-			@project.rewards.build(name: "")
-			@project.rewards.build(name: "")
-			@project.rewards.build(name: "")
-		end
+		# if @project.rewards.size == 0
+		# 	@project.rewards.build(name: "")
+		# 	@project.rewards.build(name: "")
+		# 	@project.rewards.build(name: "")
+		# end
 	end
 
 	def finish
@@ -55,22 +53,19 @@ class ProjectsController < ApplicationController
 	end
 
 	def update 
-		# authorize @project
 		@project = Project.find(params[:id])
 		if @project.update_attributes(project_params)
 			@project.update(published: true)
 			redirect_to root_path
 		else
-			# redirect_to edit_project_path(@project)
 			redirect_to :back
 		end
-		# perform an update
 	end
 
-	def delete 
+	def destroy
 		@project = Project.find(params[:id])
-		authorize @project
-		# delete project
+		@project.destroy
+		redirect_to root_path
 	end
 
 	def user_projects 
@@ -88,9 +83,7 @@ class ProjectsController < ApplicationController
 		params.require(:project).permit(
 			:user_id,
 			:name,
-			:category_ids,
 			:tagline,
-			:categories,
 			:about,
 			:faq,
 			:goal,
@@ -100,7 +93,7 @@ class ProjectsController < ApplicationController
       			:name,
       			:description,
       			:pledge_requirement
-      		],
+      		]
     	)
 	end
 end

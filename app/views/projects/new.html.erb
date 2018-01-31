@@ -63,9 +63,7 @@
 
   <div class="field">
     <%= f.label "And/or Create a New Category"%>
-    <%= f.fields_for :categories, @project.categories.build do |category_fields| %>
-    <%= category_fields.text_field :name, id: 'Name', placeholder: 'Enter a name for your new category' %>
-    <% end %>
+    <%= f.text_field :categories, placeholder: "Enter a name for your new category" %>
   </div>
 
   <%= f.submit "Next" %>
