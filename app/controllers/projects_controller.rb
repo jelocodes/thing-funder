@@ -36,11 +36,6 @@ class ProjectsController < ApplicationController
 
 	def edit 
 		@project = Project.find(params[:id])
-		# if @project.rewards.size == 0
-		# 	@project.rewards.build(name: "")
-		# 	@project.rewards.build(name: "")
-		# 	@project.rewards.build(name: "")
-		# end
 	end
 
 	def finish
@@ -52,13 +47,13 @@ class ProjectsController < ApplicationController
 		end
 	end
 
-	def update 
+	def update
 		@project = Project.find(params[:id])
 		if @project.update_attributes(project_params)
 			@project.update(published: true)
 			redirect_to root_path
 		else
-			redirect_to :back
+			render 'finish'
 		end
 	end
 

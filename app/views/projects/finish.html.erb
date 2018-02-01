@@ -4,15 +4,18 @@
 
 <%= form_for @project do |f| %>
 
+  <% if @project.errors.any? %>
+    <h3 class="field_error">Oops! Errors found. Please fill in rewards fields to save project.</h3>
+  <% end %>
+
   <div class="reward-tiers">  
 
     <div class="first">
       <%= f.fields_for :rewards do |reward| %>
-        <%= reward.hidden_field :project_id, :value => "#{@project.id}" %>
 
         <div class="field">
           <%= reward.label :name %>     
-          <%= reward.text_field :name, placeholder: "Enter reward's name" %>     
+          <%= reward.text_field :name, placeholder: "Enter reward's name" %>    
         </div>
 
         <div class="field">

@@ -54,7 +54,6 @@
 
     <div class="first">
       <%= f.fields_for :rewards do |reward| %>
-        <%= reward.hidden_field :project_id, :value => "#{@project.id}" %>
 
         <div class="field">
           <%= reward.label :name %>     
