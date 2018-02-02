@@ -1,7 +1,9 @@
 class ProjectsController < ApplicationController
 
 	def index 
-		if params[:sort] === "newest"
+		if params[:search]
+			@projects = Project.search(params[:search])
+		elsif params[:sort] === "newest"
 			@projects = Project.published.recent
 		elsif params[:sort] === "popular"
 			@projects = Project.joins(:comments).all

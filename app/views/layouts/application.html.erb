@@ -26,9 +26,14 @@
   			</div>
 
   			<div class="col-sm-12 col-md-4 col-lg-4">
-  				<form name="search">
+        
+<!--           <% form_tag projects_path, :name => 'search1', :method => 'get' do %>
+            <%= text_field_tag :search, params[:search] %>
+          <% end %> -->
+
+  				<form action="/" name="search" method="get">
   					<label class="search-box">
-    				<input type="text" />
+    				 <%= text_field_tag :search, params[:search] %>
     				<span></span>
   					</label> 
 				</form>
