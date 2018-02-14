@@ -26,7 +26,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def create 
-	    @project = Project.create(project_params)
+	    @project = current_user.projects.create(project_params)
 	    @project.categories.create(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
 
 	    if @project.errors.size == 0
