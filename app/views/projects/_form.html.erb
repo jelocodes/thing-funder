@@ -1,0 +1,49 @@
+	<div class="field">
+    <%= label_tag :name %>
+		<%= f.text_field :name, placeholder: "Enter your project's name" %>
+    <p class="field_error"><%= @project.errors[:name] if !@project.errors[:name].blank? %> </p>
+	</div>
+
+  <div class="field">
+    <%= f.label :tagline %>
+    <%= f.text_field :tagline, placeholder: "Enter a tagline for your project" %>
+      <p class="field_error"><%= @project.errors[:tagline] if !@project.errors[:tagline].blank? %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label :about %>
+    <%= f.text_area :about, cols: 30, rows: 5, placeholder: "Tell the world what your project's about." %>
+      <p class="field_error"><%= @project.errors[:about] if !@project.errors[:about].blank? %></p> 
+  </div>
+
+  <div class="field">
+    <%= f.label :goal %>
+    <%= f.number_field :goal, placeholder: "USD amount you'd like to raise for your project?" %>
+      <p class="field_error"><%= @project.errors[:goal] if !@project.errors[:goal].blank? %></p> 
+  </div>
+
+  <div class="field">
+    <%= f.label :faq %>
+    <%= f.text_area :faq, cols: 30, rows: 5, placeholder: "What are some Frequently Asked Questions about your project?" %>
+      <p class="field_error"><%= @project.errors[:faq] if !@project.errors[:faq].blank? %></p> 
+  </div>  
+
+  <div class="field">
+    <%= f.label :risk_and_challenges %>
+    <%= f.text_area :risk_and_challenges, cols: 30, rows: 5, placeholder: "What are some risks and challenges that your project can face?" %>
+      <p class="field_error"><%= @project.errors[:risk_and_challenges] if !@project.errors[:risk_and_challenges].blank? %></p> 
+  </div>
+
+  <div class="field">
+    <%= f.label :deadline %> 
+    <p>Set a deadline for when your project's funding period ends.</p>
+    <%= f.date_field :deadline %>
+      <p class="field_error"><%= @project.errors[:deadline] if !@project.errors[:deadline].blank? %></p> 
+  </div>
+
+  <div class="field">
+    <%= f.label :category %> 
+    <p>Select a category that your project fits into.</p>
+    <%= f.collection_select :category_ids, Category.all, :id, :name, include_blank: true %><br>
+     <p class="field_error"><%= @project.errors[:category] if !@project.errors[:category].blank? %></p>
+  </div>
