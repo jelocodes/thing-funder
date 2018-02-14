@@ -27,9 +27,10 @@ class ProjectsController < ApplicationController
 
 	def create 
 	    @project = current_user.projects.create(project_params)
-	    @project.categories.create(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
 
-	    if @project.errors.size == 0
+	    @project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
+
+	    if @project.errors.size == 0 
     		redirect_to project_finish_path(@project)
     	else
     		render 'new'
@@ -52,6 +53,7 @@ class ProjectsController < ApplicationController
 	def update
 		@project = Project.find(params[:id])
 		if @project.update_attributes(project_params)
+			@project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
 			@project.update(published: true)
 			redirect_to root_path
 		else

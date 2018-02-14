@@ -45,5 +45,9 @@
     <%= f.label :category %> 
     <p>Select a category that your project fits into.</p>
     <%= f.collection_select :category_ids, Category.all, :id, :name, include_blank: true %><br>
-     <p class="field_error"><%= @project.errors[:category] if !@project.errors[:category].blank? %></p>
+  </div>
+
+  <div class="field">
+    <%= f.label "And/or Create a New Category"%>
+    <%= f.text_field :categories, placeholder: "Enter a name for your new category", value: "" %>
   </div>
