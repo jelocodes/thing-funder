@@ -15,24 +15,7 @@
     <div class="first">
       <%= f.fields_for :rewards do |reward| %>
 
-        <div class="field">
-          <%= reward.label :name %>     
-          <%= reward.text_field :name, placeholder: "Enter reward's name" %>     
-        </div>
-
-        <div class="field">
-          <%= reward.label :description %>
-          <%= reward.text_area :description, placeholder: "Describe what donors will get with this reward." %>      
-        </div>
-
-        <div class="field">
-          <%= reward.label :pledge_requirement %>
-          <%= reward.text_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
-
-          <div class="reward-strikethru">
-            <div class="line"></div>
-          </div>
-        </div>
+      <%= render partial: 'rewards_form', locals: { :f => f, :reward => reward } %>
 
       <% end %>
     </div> 

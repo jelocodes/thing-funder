@@ -82,6 +82,7 @@ class ProjectsController < ApplicationController
 			:name,
 			:tagline,
 			:about,
+			:category_ids,
 			:faq,
 			:goal,
 			:risk_and_challenges,
