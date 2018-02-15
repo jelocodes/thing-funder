@@ -12,6 +12,9 @@ class Project < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :time_running_out, -> { where('deadline < ?', Date.today + 100 ).order('deadline ASC')}
 
+  has_attached_file :image, styles: { medium: "640x480>", thumb: "350x205>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\z/
+
   def rewards_attributes=(rewards_attributes)
     rewards_attributes.values.each do |reward_attributes|
       if Reward.find_by_name(reward_attributes["name"])
