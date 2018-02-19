@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :rewards, through: :user_rewards
   validates_uniqueness_of :username
   validates_presence_of :username
+  before_create :set_default_role, :if => :new_record?
 
 
 	def guest?
@@ -32,6 +33,12 @@ class User < ApplicationRecord
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
     end
+  end
+
+  private 
+
+  def set_default_role
+    self.role ||= :maker
   end
 
 end
