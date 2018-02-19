@@ -50,6 +50,9 @@
   							<%= f.submit "Submit Comment" %>
 						<% end %>
 						<br>
+                        <% else %>
+                            <p><%= link_to("Log in", new_user_session_path) %> or <%= link_to("sign up", new_user_registration_path) %> to comment on this project!</p>
+                            <br>
 					<% end %>
 
 					<% @project.comments.each do |comment| %>
