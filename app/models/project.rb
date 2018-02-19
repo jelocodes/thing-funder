@@ -7,6 +7,7 @@ class Project < ApplicationRecord
   has_many :categories, through: :project_categories, dependent: :destroy
   validates_presence_of :name, :tagline, :about, :goal, :deadline 
   validates_associated :rewards
+  validate :deadline_cannot_be_in_the_past
 
   scope :recent, -> { order('projects.created_at DESC') }	
   scope :published, -> { where(published: true) }
@@ -30,6 +31,12 @@ class Project < ApplicationRecord
       Project.where("name LIKE ?", "%#{search}%")
     else
       Project.all
+    end
+  end
+
+  def deadline_cannot_be_in_the_past 
+    if deadline.present? && deadline < Date.today
+      errors.add(:deadline, "Project deadline can't be in the past")
     end
   end
 

@@ -74,7 +74,7 @@
    		<% @project.rewards.each do |reward| %>
    			<div class="card">
  				<h3><%= reward.name %></h3> 	
- 				<p><%= reward.pledge_requirement %></p>	
+ 				<p>$ <%= reward.pledge_requirement %></p>	
  				<p><%= reward.description %></p>	
  				<%= link_to "DONATE", "#", :class => "btn blue" %>		
    			</div>
