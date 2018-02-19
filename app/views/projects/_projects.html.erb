@@ -6,7 +6,11 @@
           <div class="post-module">
           <!-- Thumbnail-->
           <div class="thumbnail">
-            <img src="https://placeimg.com/640/480/tech">
+            <% if project.image.exists? %>
+              <%= image_tag project.image.url %>
+            <% else %>
+              <img src="https://placeimg.com/640/480/tech">
+            <% end %>
           </div>
           <!-- Project Content-->
           <div class="post-content">

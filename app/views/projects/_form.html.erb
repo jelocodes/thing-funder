@@ -5,6 +5,11 @@
 	</div>
 
   <div class="field">
+    <%= label_tag :image %>
+    <%= f.file_field :image %>
+  </div>
+
+  <div class="field">
     <%= f.label :tagline %>
     <%= f.text_field :tagline, placeholder: "Enter a tagline for your project" %>
       <p class="field_error"><%= @project.errors[:tagline] if !@project.errors[:tagline].blank? %></p>
@@ -18,7 +23,7 @@
 
   <div class="field">
     <%= f.label :goal %>
-    <%= f.number_field :goal, placeholder: "USD amount you'd like to raise for your project?" %>
+    $<%= f.number_field :goal, placeholder: "USD amount you'd like to raise for your project?" %>
       <p class="field_error"><%= @project.errors[:goal] if !@project.errors[:goal].blank? %></p> 
   </div>
 
