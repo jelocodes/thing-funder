@@ -40,4 +40,8 @@ class Project < ApplicationRecord
     end
   end
 
+  def add_categories(category_params)
+    self.categories << Category.find_or_create_by(name: category_params) unless category_params.blank?
+  end
+
 end

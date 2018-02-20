@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
 
-	before_action :set_project, only: [:show, :edit, :update, :destroy]	
+	before_action :set_project, only: [:show, :edit, :update, :destroy, :finish]
+
+	before_action :authorize_user, only: [:edit, :update, :destroy]	
 
 	def index 
 		if params[:search]
@@ -29,7 +31,7 @@ class ProjectsController < ApplicationController
 	def create 
 	    @project = current_user.projects.create(project_params)
 
-	    @project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
+	    @project.add_categories(params["project"]["categories"]) 
 
 	    if @project.errors.size == 0 
     		redirect_to project_finish_path(@project)
@@ -39,24 +41,18 @@ class ProjectsController < ApplicationController
 	end
 
 	def edit 
-		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 	end
 
 	def finish
 		@project = Project.find(params[:project_id])
-		if @project.rewards.size == 0
-			@project.rewards.build(name: "")
-			@project.rewards.build(name: "")
-			@project.rewards.build(name: "")
-		end
+		3.times { @project.rewards.build(name: "") }
 	end
 
 	def update
-		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		if @project.update_attributes(project_params)
-			@project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
+			@project.add_categories(params["project"]["categories"]) 
 			@project.update(published: true)
-			redirect_to root_path
+			redirect_to project_path(@project)
 		else
 			if @project.published? 
 				render 'edit' 
@@ -67,7 +63,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def destroy
-		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		@project.destroy
 		redirect_to root_path
 	end
@@ -84,7 +79,11 @@ class ProjectsController < ApplicationController
 	private 
 
 	def set_project
-		@project = Project.find(params[:id])
+		@project = Project.find(params[:project_id] || params[:id])
+	end
+
+	def authorize_user
+		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 	end
 
 	def project_params 
