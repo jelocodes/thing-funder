@@ -23,5 +23,7 @@ Rails.application.routes.draw do
   end
 
   get "users/:user_id/projects" => "projects#user_projects"
+
+  get "results" => "projects#results"
   
 end

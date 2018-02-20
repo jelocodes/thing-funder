@@ -46,25 +46,25 @@
   	</a>
 </div>
 
-<div class="projects">
+<a name="projects"><div class="projects"></a>
   <h2 class="project_title">Projects</h2>
   <div id="sort-button" class="container">
     <div class="row">
       <div class="col-sm">
-        <%= button_to "NEWEST PROJECTS", {:action => "index"}, params: {:sort => "newest"}, :class => "btn blue", :method => :get %> 
+        <%= button_to "NEWEST PROJECTS", {:action => "index", :anchor => "projects"}, params: {:sort => "newest"}, :class => "btn blue", :method => :get %> 
       </div>
       <div class="col-sm">
-        <%= button_to "MOST POPULAR PROJECTS", {:action => "index"}, params: {:sort => "popular"}, :class => "btn blue", :method => :get %>       
+        <%= button_to "MOST POPULAR PROJECTS", {:action => "index", :anchor => "projects"}, params: {:sort => "popular"}, :class => "btn blue", :method => :get %>       
       </div>
       <div class="col-sm">
-        <%= button_to "TIME RUNNING OUT!", {:action => "index"}, params: {:sort => "time_running_out"}, :class => "btn blue", :method => :get %> 
+        <%= button_to "TIME RUNNING OUT!", {:action => "index", :anchor => "projects"}, params: {:sort => "time_running_out"}, :class => "btn blue", :method => :get %> 
       </div>
     </div>
 <!--     <%= button_to "MOST POPULAR PROJECTS", {action: "new"}, {class: "btn blue"} %>
     <%= button_to "TIME RUNNING OUT!", {action: "new"}, {class: "btn blue"} %>  --> 
   </div>
   <br/>
-  <div class="row">
+  <div class="row ">
 
     <% if @projects.empty? %>
       <h3 class="project_title">No Projects Found</h3>
@@ -76,7 +76,7 @@
 
     <% end %>
 
-    </div>
   </div>
+</div>
 
 

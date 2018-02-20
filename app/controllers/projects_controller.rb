@@ -6,7 +6,8 @@ class ProjectsController < ApplicationController
 
 	def index 
 		if params[:search]
-			@projects = Project.search(params[:search])
+			@search = params[:search]
+			redirect_to :action => 'results', :anchor => 'projects', search: @search
 		elsif params[:sort] === "newest"
 			@projects = Project.published.recent
 		elsif params[:sort] === "popular"
@@ -16,6 +17,11 @@ class ProjectsController < ApplicationController
 		else
 			@projects = Project.all
 		end
+	end
+
+	def results 
+		@projects = Project.search(params[:search])
+		render 'index'
 	end
 
 	def show 
