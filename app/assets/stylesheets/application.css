@@ -443,3 +443,9 @@ div#sort-button.container {
 h3.field_error, #error_explanation h2 {
   text-align:center;
 }
+
+.alert {
+  text-align: center;
+  margin-top: 20px;
+  color: #e45555;
+}

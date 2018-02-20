@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
 
 	def edit 
 		@project = Project.find(params[:id])
-		return head(:forbidden) unless current_user.admin? || current_user.try(:id) == @project.user_id
+		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 	end
 
 	def finish
@@ -53,7 +53,7 @@ class ProjectsController < ApplicationController
 
 	def update
 		@project = Project.find(params[:id])
-		return head(:forbidden) unless current_user.admin? || current_user.try(:id) == @project.user_id
+		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		if @project.update_attributes(project_params)
 			@project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
 			@project.update(published: true)
@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
 
 	def destroy
 		@project = Project.find(params[:id])
-		return head(:forbidden) unless current_user.admin? || current_user.try(:id) == @project.user_id
+		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		@project.destroy
 		redirect_to root_path
 	end

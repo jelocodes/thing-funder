@@ -25,6 +25,8 @@
    				<%= image_tag("/thingfunder.png", size:'431x50', :class => "center-block") %> 			
   			</div>
 
+<!--         <%= content_tag(:div, flash[:notice], :id=> "flash_alert") if flash[:notice] %> -->
+
   			<div class="col-sm-12 col-md-4 col-lg-4">
         
 <!--           <% form_tag projects_path, :name => 'search1', :method => 'get' do %>
@@ -40,6 +42,8 @@
   			</div>
   		</div>
   	</div>
+
+    <%= flash_messages %>
 
     <%= yield %>
   </body>
