@@ -33,7 +33,7 @@
               <div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<%=num = rand(100)%>%"><%=num%>% funded</div>
             </div>
             <p class="description"><%= project.about %></p>
-            <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> <%= (project.deadline - Date.today).to_i %> days left </span> <span><%= project.comments.size %> comments</span><br>
+            <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> <%= days_to_go(project) %> days left </span> <span><%= project.comments.size %> comments</span><br>
               <% if project.user == current_user %>
                 <%= link_to "EDIT", edit_project_path(project), :class => "btn blue" %> 
                 <%= link_to "DELETE", project_path(project), data: { confirm: 'Are you sure?' }, method: :delete, :class => "btn blue" %> 

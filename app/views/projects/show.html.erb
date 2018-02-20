@@ -72,7 +72,7 @@
         <p>pledged out of $1000 total</p>
         <h3>20</h3>
         <p>backers</p>
-		<h3><%= (@project.deadline - @project.created_at.to_date).to_i %></h3>
+		<h3><%= days_to_go(@project) %></h3>
 		<p>days to go</p>
    		<% @project.rewards.each do |reward| %>
    			<div class="card">
