@@ -1,5 +1,7 @@
 class ProjectsController < ApplicationController
 
+	before_action :set_project, only: [:show, :edit, :update, :destroy]	
+
 	def index 
 		if params[:search]
 			@projects = Project.search(params[:search])
@@ -15,7 +17,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def show 
-		@project = Project.find(params[:id])
 		@comment = Comment.new
 		session[:return_to] ||= request.referer
 	end
@@ -38,7 +39,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def edit 
-		@project = Project.find(params[:id])
 		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 	end
 
@@ -52,7 +52,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def update
-		@project = Project.find(params[:id])
 		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		if @project.update_attributes(project_params)
 			@project.categories << Category.find_or_create_by(name: params["project"]["categories"]) unless params["project"]["categories"].blank?
@@ -68,7 +67,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def destroy
-		@project = Project.find(params[:id])
 		redirect_to '/', alert: "You're not allowed to do that!" unless current_user && current_user.admin? || current_user.try(:id) == @project.user_id
 		@project.destroy
 		redirect_to root_path
@@ -84,6 +82,10 @@ class ProjectsController < ApplicationController
 	end
 
 	private 
+
+	def set_project
+		@project = Project.find(params[:id])
+	end
 
 	def project_params 
 		params.require(:project).permit(
