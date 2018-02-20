@@ -4,7 +4,7 @@ ThingFunder was a project conceptualized as a crowdfunding decentralized applica
 
 # Installation & Usage
 
-To play around with this app, clone or download this repo and install dependencies via ```bundle install```. Afterwards, run ```rake:db``` to create the database, run ```db:seed``` (optionally) to populate it with randomized test data using the Faker gem, and start the local server using the ```rails s``` command. Initiate a console via ```rails c``` in order to play around with the models.
+To play around with this app, clone or download this repo and install dependencies via ```bundle install```. Afterwards, run ```rake db:create``` to create the database, run ```db:seed``` (optionally) to populate it with randomized test data using the Faker gem, and start the local server using the ```rails s``` command. Initiate a console via ```rails c``` in order to play around with the models, and open a browser window to ```localhost:3000``` to preview and navigate the app.
 
 # Contributing
 
