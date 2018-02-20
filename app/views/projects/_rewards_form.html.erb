@@ -10,7 +10,7 @@
 
  <div class="field">
    <%= reward.label :pledge_requirement %>
-   <%= reward.text_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
+   $<%= reward.number_field :pledge_requirement, placeholder: "Enter the amount required to avail this reward." %>
 
    <div class="reward-strikethru">
      <div class="line"></div>

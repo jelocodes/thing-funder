@@ -6,7 +6,6 @@ class RewardsController < ApplicationController
 	def create 
 	    @reward = Reward.create(reward_params)
 	    @project = Project.find(params[:reward][:project_id].to_i)
-	    byebug
 	    redirect_to edit_project_path(@project)
 	end
 
