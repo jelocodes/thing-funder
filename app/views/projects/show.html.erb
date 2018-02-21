@@ -58,7 +58,7 @@
 					<% @project.comments.each do |comment| %>
 						<h4><%= image_tag gravatar_url(comment.user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
 						<p><%= comment.content %></p>
-                        <%= link_to 'Delete', comment_path(comment.id), data: {:confirm => "Are you sure?"}, :method => :delete if comment.user_id == current_user.id %>						
+                        <%= link_to 'Delete', comment_path(comment.id), data: {:confirm => "Are you sure?"}, :method => :delete if current_user && comment.user_id == current_user.id %>						
 					<% end %>
                 </div>
             </div>
