@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
 
-	before_action :find_commentable
 	before_action :set_comment, only: [:show, :edit, :update, :destroy]
 	before_action :authorize_user, only: [:destroy]	
 
@@ -34,11 +33,6 @@ class CommentsController < ApplicationController
 	def set_comment
 		@comment = Comment.find(params[:id])
 	end
-
-    def find_commentable
-      @commentable = Comment.find_by_id(params[:comment_id]) if params[:comment_id]
-      @commentable = Project.find_by_id(params[:project_id]) if params[:id] || params[:comment][:project_id] 
-    end
 
 	def comment_params 
 		params.require(:comment).permit(:content, :user_id, :commentable_id)
