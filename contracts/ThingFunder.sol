@@ -19,22 +19,15 @@ contract ThingFunder {
 		return divisor;
 	}
 
-	function refundToContract() payable {
-		if (msg.sender == maker) {
-			address(this).balance += msg.value;
-		}
-	}
-
 	function payoutToMaker() payable {
 		if (msg.sender == backer) {
 			maker.transfer(divisor);
 		}
 	}
-
+	
 	function refundToBacker() payable {
-		if (msg.sender == maker) {
-			backer.transfer(divisor);
-		}
+	    require(msg.sender == maker && msg.value == divisor);
+	    backer.transfer(divisor);
 	}
 
 	function getBalance() constant returns (uint) {
