@@ -34,3 +34,5 @@ contract ThingFunder {
 		return address(this).balance;
 	}
 }
+
+// add function for backer to add more donations in case they want to donate more, or they were refunded and want to donate again... recalculate divisor? 
