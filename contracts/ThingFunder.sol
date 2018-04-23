@@ -1,3 +1,5 @@
+pragma solidity ^0.4.12;
+
 contract ThingFunder {
 	address public backer;
 	address public maker; 
@@ -15,6 +17,12 @@ contract ThingFunder {
 
 	function getDivisor() constant returns(uint) {
 		return divisor;
+	}
+
+	function refundToContract() payable {
+		if (msg.sender == maker) {
+			address(this).balance += msg.value;
+		}
 	}
 
 	function payoutToMaker() payable {
