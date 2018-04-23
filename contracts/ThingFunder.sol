@@ -8,10 +8,6 @@ contract ThingFunder {
 	constructor (address _maker) payable {
 		backer = msg.sender;
 		maker = _maker;
-		divisor = 0;
-	}
-
-	function setDivisor() {
 		divisor = address(this).balance/uint(4);
 	}
 
