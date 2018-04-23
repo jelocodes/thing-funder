@@ -7,19 +7,19 @@ contract ThingFunder {
 		maker = _maker;
 	}
 
-	function payoutToMaker() {
+	function payoutToMaker() payable {
 		if (msg.sender == backer) {
-			seller.send(this.balance);
+			seller.send(address(this).balance);
 		}
 	}
 
-	function refundToBacker() {
+	function refundToBacker() payable {
 		if(msg.sender == maker) {
-			buyer.send(this.balance);
+			buyer.send(address(this).balance);
 		}
 	}
 
 	function getBalance() {
-		return this.balance;
+		return address(this).balance;
 	}
 }
