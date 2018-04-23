@@ -8,14 +8,18 @@ contract ThingFunder {
 	}
 
 	function payoutToMaker() {
-		// function to send funds to the maker in parts
+		if (msg.sender == backer) {
+			seller.send(this.balance);
+		}
 	}
 
 	function refundToBacker() {
-		// function to refund remaining funds to backer
+		if(msg.sender == maker) {
+			buyer.send(this.balance);
+		}
 	}
 
 	function getBalance() {
-		// to check balance
+		return this.balance;
 	}
 }
