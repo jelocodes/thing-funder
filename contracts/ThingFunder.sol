@@ -3,7 +3,7 @@ contract ThingFunder {
 	address public maker; 
 	uint divisor;
 
-	constructor (address _maker) {
+	constructor (address _maker) payable {
 		backer = msg.sender;
 		maker = _maker;
 		divisor = 0;
@@ -19,17 +19,17 @@ contract ThingFunder {
 
 	function payoutToMaker() payable {
 		if (msg.sender == backer) {
-			seller.send(address(this).balance);
+			maker.transfer(divisor);
 		}
 	}
 
 	function refundToBacker() payable {
-		if(msg.sender == maker) {
-			buyer.send(address(this).balance);
+		if (msg.sender == maker) {
+			backer.transfer(divisor);
 		}
 	}
 
-	function getBalance() {
+	function getBalance() constant returns (uint) {
 		return address(this).balance;
 	}
 }
