@@ -20,7 +20,7 @@ contract ThingFunder {
 		return divisor;
 	}
 
-	function payoutToMaker() payable {
+	function payoutToMaker() {
 		if (msg.sender == backer) {
 			maker.transfer(divisor);
 			timesBacked += 1;
@@ -50,8 +50,10 @@ contract ThingFunder {
 	function getTimesBacked() constant returns (uint) {
 	    return timesBacked;
 	}
+	
+	function refundAllRemaining() {
+	    require(msg.sender == maker && address(this).balance > 0);
+	    backer.transfer(address(this).balance);
+	}
 }
 
-// allow for repeated deposits if they have been refunded and time has yet to run out[check]
-// add time/date run out... everything works except the check to keep funding even if timesRefunded is less than 0
-// allow only giving back to donors if they have been paid out, add a pay out counter [check]
