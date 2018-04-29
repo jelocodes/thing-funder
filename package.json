@@ -2,8 +2,15 @@
   "name": "thing-funder-package",
   "private": true,
   "dependencies": {
+    "browserify": "~> 13.0.0",
+    "browserify-incremental": "~> 3.0.1",
+    "coffeeify": "~> 0.6",
     "bootstrap": "^3.3.7",
-    "jquery": "^3.2.1"
+    "ethjs-contract": "^0.2.0",
+    "ethjs-query": "^0.3.6",
+    "jquery": "^3.2.1",
+    "requirejs": "^2.3.5",
+    "truffle-hdwallet-provider": "0.0.3"
   },
   "version": "1.0.0",
   "main": "index.js",
