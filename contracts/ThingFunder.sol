@@ -56,4 +56,3 @@ contract ThingFunder {
 	    backer.transfer(address(this).balance);
 	}
 }
-
