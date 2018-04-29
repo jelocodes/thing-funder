@@ -14,6 +14,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
+//= require web3check
 
 $(document).ready(function() {
 	// add new reward form
