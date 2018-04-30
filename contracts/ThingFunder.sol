@@ -7,13 +7,18 @@ contract ThingFunder {
 	uint timesRefunded;
 	uint timesBacked;
 
-	constructor (address _maker) payable {
+	constructor (address _maker) {
 		backer = msg.sender;
 		maker = _maker;
+		timesBacked = 0;
+	}
+	
+	function initialize() payable {
+	    require(timesBacked == 0);
 		divisor = address(this).balance/uint(4);
 		maker.transfer(divisor);
 		timesRefunded = 0;
-		timesBacked = 1;
+		timesBacked = 1;	    
 	}
 
 	function getDivisor() constant returns(uint) {
