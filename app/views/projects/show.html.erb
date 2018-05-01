@@ -65,7 +65,11 @@
 		</div>
     </div>
     <div class="col-md-3">
-    	<h2>Support this!</h2>
+        <% if current_user %>
+    	   <h2><%= link_to "Support this!", "#"%></h2>
+        <% else %>
+            <h4><%= link_to "Log in to support this!", new_user_session_path %></h4>
+        <% end %>
 		<div class="progress">
         	<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">70% funded</div>
         </div>
@@ -80,7 +84,11 @@
  				<h3><%= reward.name %></h3> 	
  				<p>$ <%= reward.pledge_requirement %></p>	
  				<p><%= reward.description %></p>	
- 				<%= link_to "DONATE", "#", :class => "btn blue" %>		
+                <%if current_user %>
+ 				   <%= link_to "DONATE", "#", :class => "btn blue" %>	
+                <% else %>
+                   <%= link_to "LOG IN TO DONATE", new_user_session_path, :class => "btn blue" %> 
+                <% end %>   	
    			</div>
     	<% end %> 		
     </div>
