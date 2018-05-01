@@ -65,8 +65,10 @@
 		</div>
     </div>
     <div class="col-md-3">
-        <% if current_user %>
+        <% if current_user && days_to_go(@project) > 0 && !funded?(@project)  %>
     	   <h2><%= link_to "Support this!", "#"%></h2>
+        <% elsif current_user %>
+            <p></p>
         <% else %>
             <h4><%= link_to "Log in to support this!", new_user_session_path %></h4>
         <% end %>
@@ -77,17 +79,22 @@
         <p>pledged out of $1000 total</p>
         <h3>20</h3>
         <p>backers</p>
-		<h3><%= days_to_go(@project) %></h3>
-		<p>days to go</p>
+        <% if days_to_go(@project) < 0 %>
+            <h3>Funding period ended.</h3>
+        <% else %>
+		  <h3><%= days_to_go(@project) %></h3>
+          <p>days to go</p>
+        <% end %>
    		<% @project.rewards.each do |reward| %>
    			<div class="card">
  				<h3><%= reward.name %></h3> 	
  				<p>$ <%= reward.pledge_requirement %></p>	
- 				<p><%= reward.description %></p>	
-                <%if current_user %>
+ 				<p><%= reward.description %></p>
+                <h4><%= reward.number_claimed == nil ? 0 : reward.number_claimed %> claimed</h4>	
+                <%if current_user && days_to_go(@project) > 0 && @project.backers.include?(@user) %>
  				   <%= link_to "DONATE", "#", :class => "btn blue" %>	
                 <% else %>
-                   <%= link_to "LOG IN TO DONATE", new_user_session_path, :class => "btn blue" %> 
+                   <p></p>
                 <% end %>   	
    			</div>
     	<% end %> 		
