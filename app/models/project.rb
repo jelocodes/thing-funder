@@ -2,6 +2,8 @@ class Project < ApplicationRecord
 	belongs_to :user
 	has_many :rewards, dependent: :destroy
 	has_many :updates, dependent: :destroy
+  has_many :project_backers
+  has_many :backers, through: :project_backers, :source => :user
 	has_many :comments, as: :commentable, dependent: :destroy
   has_many :project_categories, dependent: :destroy
   has_many :categories, through: :project_categories, dependent: :destroy

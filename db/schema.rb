@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180501020634) do
+ActiveRecord::Schema.define(version: 20180501042508) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 20180501020634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "project_backers", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_backers_on_project_id"
+    t.index ["user_id"], name: "index_project_backers_on_user_id"
   end
 
   create_table "project_categories", force: :cascade do |t|
@@ -64,6 +73,7 @@ ActiveRecord::Schema.define(version: 20180501020634) do
     t.integer "backer_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_claimed"
   end
 
   create_table "updates", force: :cascade do |t|
