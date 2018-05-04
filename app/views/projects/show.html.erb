@@ -65,8 +65,10 @@
 		</div>
     </div>
     <div class="col-md-3">
-        <% if current_user && days_to_go(@project) > 0 && !funded?(@project)  %>
-    	   <h2><%= link_to "Support this!", "#"%></h2>
+        <% if current_user && days_to_go(@project) > 0 && !funded?(@project) && !@project.backers.include?(current_user) %>
+    	   <h2><%= link_to "Support this!", {:controller => "projects"}, :class=> "support"%></h2>
+        <% elsif @project.backers.include?(current_user) %>
+            <h2>Choose a reward tier below!</h2>
         <% elsif current_user %>
             <p></p>
         <% else %>
@@ -76,7 +78,7 @@
         	<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">70% funded</div>
         </div>
         <h3>$700</h3>
-        <p>pledged out of $1000 total</p>
+        <p>pledged out of $ <%= @project.%> total</p>
         <h3>20</h3>
         <p>backers</p>
         <% if days_to_go(@project) < 0 %>
@@ -91,7 +93,7 @@
  				<p>$ <%= reward.pledge_requirement %></p>	
  				<p><%= reward.description %></p>
                 <h4><%= reward.number_claimed == nil ? 0 : reward.number_claimed %> claimed</h4>	
-                <%if current_user && days_to_go(@project) > 0 && @project.backers.include?(@user) %>
+                <%if current_user && days_to_go(@project) > 0 && @project.backers.include?(current_user) %>
  				   <%= link_to "DONATE", "#", :class => "btn blue" %>	
                 <% else %>
                    <p></p>
@@ -100,5 +102,23 @@
     	<% end %> 		
     </div>
 </div>
+<script>
+    function addBacker() {
+        $.ajax({
+            url: '/projects/' + <%= @project.id %>,
+            dataType: 'json',
+            type: 'PATCH',
+            data: {
+                project: {backer_ids: <%= current_user.id %>} 
+            },
+            success: function(data) {
+                alert("Successful");
+            },
+            failure: function() {
+                alert("Unsuccessful");
+            }
+        });
+    }
+</script>
 
 </div>

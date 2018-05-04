@@ -99,6 +99,7 @@ class ProjectsController < ApplicationController
 			:tagline,
 			:about,
 			:category_ids,
+			:backer_ids,
 			:image,
 			:faq,
 			:goal,

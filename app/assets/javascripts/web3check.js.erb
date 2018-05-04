@@ -1,0 +1,64 @@
+window.addEventListener('load', function() {
+	if (typeof web3 !== 'undefined') {
+		startApp(web3);
+		console.log('loaded!');
+	} else {
+		// Warn the user that they need to get a web3 browser
+		// Or install MetaMask, maybe with a nice graphic.
+		console.log('Download MetaMask');
+	}
+})
+
+const Eth = require('ethjs-query');
+const EthContract = require('ethjs-contract');
+
+const abi = [{
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_maker",
+          "type": "address"
+        }
+      ],
+      "name": "newProject",
+      "outputs": [
+        {
+          "name": "newContract",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"   
+}]
+const address = '0x0f2c2e7e4f4805011a2d327a3dce3d12072ae827'
+
+function startApp(web3) {
+	const eth = new Eth(web3.currentProvider);
+	const contract = new EthContract(eth);
+
+	initContract(contract);
+}
+
+function initContract(contract) {
+	const ThingFactory = contract(abi)
+	const thingFactory = ThingFactory.at(address)
+	listenForClicks(thingFactory)
+}
+
+function listenForClicks(thingFactory) {
+	let link = document.querySelector('a.support');
+	link.addEventListener('click', function(event) {
+		event.preventDefault();
+		thingFactory.newProject('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {to: address, from: web3.eth.accounts[0]})
+		.then(function (txHash) {
+			console.log('Transaction sent');
+			console.dir(txHash);
+			location.reload();
+			// waitForTxToBeMined(txHash);
+		})
+		.catch(console.error);
+
+		addBacker();
+	})
+}
