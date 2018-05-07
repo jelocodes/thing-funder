@@ -12,26 +12,142 @@ window.addEventListener('load', function() {
 const Eth = require('ethjs-query');
 const EthContract = require('ethjs-contract');
 
-const abi = [{
-      "constant": false,
+const bytecode = "0x60806040526040516020806107b783398101806040528101908080519060200190929190505050336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060043073ffffffffffffffffffffffffffffffffffffffff16318115156100ca57fe5b04600281905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f1935050505015801561013b573d6000803e3d6000fd5b50600060038190555060016004819055505061065b8061015c6000396000f3006080604052600436106100a4576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806312065fe0146100a9578063143eef54146100d457806317a090c01461012b5780634feefb041461014257806350655d8c1461016d5780635412f1f3146101c457806378d3ee04146101ce5780637c6f06b1146101e5578063a5014a8214610210578063e5eb6ab51461021a575b600080fd5b3480156100b557600080fd5b506100be610245565b6040518082815260200191505060405180910390f35b3480156100e057600080fd5b506100e9610264565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561013757600080fd5b50610140610289565b005b34801561014e57600080fd5b5061015761035d565b6040518082815260200191505060405180910390f35b34801561017957600080fd5b50610182610367565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6101cc61038d565b005b3480156101da57600080fd5b506101e3610416565b005b3480156101f157600080fd5b506101fa610516565b6040518082815260200191505060405180910390f35b610218610520565b005b34801561022657600080fd5b5061022f610625565b6040518082815260200191505060405180910390f35b60003073ffffffffffffffffffffffffffffffffffffffff1631905090565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561035b57600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f19350505050158015610348573d6000803e3d6000fd5b5060016004600082825401925050819055505b565b6000600354905090565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480156103eb57506000600354115b80156103f8575060025434145b151561040357600080fd5b6001600360008282540392505081905550565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614801561048a575060003073ffffffffffffffffffffffffffffffffffffffff1631115b151561049557600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc3073ffffffffffffffffffffffffffffffffffffffff16319081150290604051600060405180830381858888f19350505050158015610513573d6000803e3d6000fd5b50565b6000600454905090565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614801561057e575060025434145b801561058c57506000600454115b151561059757600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f19350505050158015610600573d6000803e3d6000fd5b5060016003600082825401925050819055506001600460008282540392505081905550565b60006002549050905600a165627a7a723058202a28dc6bd3c0e98eeab519f4e987aadf9d7c7836883c6b270c80f28eea22911a0029"
+
+const abi = 
+[
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "backer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "maker",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "name": "_maker",
           "type": "address"
         }
       ],
-      "name": "newProject",
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getDivisor",
       "outputs": [
         {
-          "name": "newContract",
-          "type": "address"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "payoutToMaker",
+      "outputs": [],
+      "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"   
-}]
-const address = '0x0f2c2e7e4f4805011a2d327a3dce3d12072ae827'
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "refundToBacker",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "fundAgain",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTimesRefunded",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTimesBacked",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "refundAllRemaining",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
 
 function startApp(web3) {
 	const eth = new Eth(web3.currentProvider);
@@ -41,24 +157,75 @@ function startApp(web3) {
 }
 
 function initContract(contract) {
-	const ThingFactory = contract(abi)
-	const thingFactory = ThingFactory.at(address)
-	listenForClicks(thingFactory)
+	const ThingFunder = contract(abi)
+
+	listenForClicks(ThingFunder)
 }
 
-function listenForClicks(thingFactory) {
-	let link = document.querySelector('a.support');
-	link.addEventListener('click', function(event) {
+function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds) {
+	fetch(url)
+	.then(
+		function(response) {
+			response.json().then(function(data) {
+				if (data.result.status === "1") {
+					web3.eth.getTransactionReceipt(txHash, function(err, res){
+						console.log(res);
+					});
+					// location.reload();
+				} else {
+					reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
+				}
+			})
+		});
+}
+
+function listenForClicks(ThingFunder) {
+	let links = document.querySelector('a.btn.blue');
+	links.addEventListener('click', function(event) {
 		event.preventDefault();
-		thingFactory.newProject('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {to: address, from: web3.eth.accounts[0]})
+		ThingFunder.new('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {from: web3.eth.accounts[0], value: web3.toWei($('a.btn.blue').attr('data-amount'), 'ether'), data: bytecode, gas: 711546})
 		.then(function (txHash) {
 			console.log('Transaction sent');
 			console.dir(txHash);
-			location.reload();
-			// waitForTxToBeMined(txHash);
+			let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
+			let amount = parseInt($('a.btn.blue').attr('data-amount'))
+			let reward_id = parseInt($('a.btn.blue').attr('data-reward-id'))
+			let number_claimed = parseInt($('a.btn.blue').attr('data-number-claimed'))
+			let project_id = parseInt($('a.btn.blue').attr('data-project-id'))
+			let user_id = parseInt($('a.current_user').attr('data-user-id'))
+			let current_funds = parseInt($('p.funds').text())
+			// debugger
+					        $.ajax({
+            			url: '/projects/' + project_id,
+            			dataType: 'json',
+            			type: 'PATCH',
+            			data: {
+                			project: {backer_ids: user_id, funds: current_funds + amount} 
+            			},
+            			success: function(data) {
+                			alert("Successful");
+            			},
+            			failure: function() {
+                			alert("Unsuccessful");
+            			}
+        			});
+        			$.ajax({
+            			url: `/rewards/${reward_id}`,
+            			dataType: 'json',
+            			type: 'PATCH',
+            			data: {
+                			reward: {number_claimed: parseInt(`${number_claimed}`) + 1}
+            			},
+            			success: function(data) {
+                			alert("Successful");
+            			},
+            			failure: function() {
+                			alert("Unsuccessful");
+            			}
+        			});
+			reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
 		})
 		.catch(console.error);
+	}
+)}
 
-		addBacker();
-	})
-}

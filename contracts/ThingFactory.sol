@@ -3,18 +3,13 @@ import "./ThingFunder.sol";
 
 contract ThingFactory {
     
-    address[] public contracts;
+    event lastContract(address latestContract);
     
     event newContractOutput(address newContract);
     
     // deploy a new contract 
-    function newProject(address _maker) public returns(address newContract) {
+    function newProject(address _maker) public {
         ThingFunder t = new ThingFunder(_maker);
-        contracts.push(t);
-        return t; 
     }
-    
-    function lastContractCreated() public returns(address lastContract) {
-        return contracts[contracts.length -1];
-    }
+
 }

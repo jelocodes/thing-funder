@@ -9,6 +9,11 @@ class RewardsController < ApplicationController
 	    redirect_to edit_project_path(@project)
 	end
 
+	def update 
+		@reward = Reward.find(params[:id])
+		@reward.update(reward_params)
+	end
+
 	private 
 
 	def reward_params 
@@ -16,7 +21,8 @@ class RewardsController < ApplicationController
 			:project_id,
 			:name,
 			:description,
-			:pledge_requirement
+			:pledge_requirement,
+			:number_claimed
     	)
 	end
 end

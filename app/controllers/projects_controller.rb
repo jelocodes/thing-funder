@@ -100,6 +100,7 @@ class ProjectsController < ApplicationController
 			:about,
 			:category_ids,
 			:backer_ids,
+			:funds,
 			:image,
 			:faq,
 			:goal,

@@ -15,7 +15,7 @@
   			<div class="col-sm-12 col-md-4 col-lg-4">
   				<%if current_user %> 
 
-					<nav><%= link_to('Home ', root_path)%><%= link_to('| Your Projects ', user_projects_path(current_user))%><%= link_to('| Create Project ', new_user_project_path(current_user) )%><%= link_to('| Logout', destroy_user_session_path, method: :delete) %></nav>  
+					<nav><%= link_to('Home ', root_path)%><%= link_to('| Your Projects ', user_projects_path(current_user), :class => "current_user", :data => {:user_id => current_user.id })%><%= link_to('| Create Project ', new_user_project_path(current_user) )%><%= link_to('| Logout', destroy_user_session_path, method: :delete) %></nav>  
 				<% else %>
 					<nav><a href="/">Home</a> <%= link_to("| Login", new_user_session_path) %> <%= link_to("| Sign Up", new_user_registration_path) %></nav>
 				<% end %>	
