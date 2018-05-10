@@ -449,3 +449,7 @@ h3.field_error, #error_explanation h2 {
   margin-top: 20px;
   color: #e45555;
 }
+
+span.percentage {
+  color: #1f1c1c;
+}

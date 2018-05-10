@@ -66,16 +66,16 @@
     </div>
     <div class="col-md-3">
         <% if current_user && days_to_go(@project) > 0 && !funded?(@project) && !@project.backers.include?(current_user) %>
-    	   <h2>Choose a reward tier below!</h2>
+    	   <h2 class="message">Choose a reward tier below!</h2>
         <% elsif @project.backers.include?(current_user) %>
-            <h2>Thanks for backing the project!</h2>
+            <h2 class="message">Thanks for backing the project!</h2>
         <% elsif current_user %>
             <p></p>
         <% else %>
             <h4><%= link_to "Log in to support this!", new_user_session_path %></h4>
         <% end %>
 		<div class="progress">
-        	<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">70% funded</div>
+        	<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:10%"><span class="percentage"><%=(@project.funds.to_f / @project.goal.to_f * 100).to_i %>%</span></div>
         </div>
         <h3>$ <p style="display:inline;" class="funds"><%= @project.funds %></p></h3>
         <p>pledged out of $ <%= @project.goal %> total</p>

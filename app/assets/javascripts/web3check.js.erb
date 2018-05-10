@@ -7,6 +7,7 @@ window.addEventListener('load', function() {
 		// Or install MetaMask, maybe with a nice graphic.
 		console.log('Download MetaMask');
 	}
+	$("div.progress-bar.project").attr("style", `width: ${$("span.percentage").text()}`);
 })
 
 const Eth = require('ethjs-query');
@@ -171,38 +172,14 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
 					web3.eth.getTransactionReceipt(txHash, function(err, res){
 						console.log(res);
 					});
-					// location.reload();
-				} else {
-					reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
-				}
-			})
-		});
-}
-
-function listenForClicks(ThingFunder) {
-	let links = document.querySelector('a.btn.blue');
-	links.addEventListener('click', function(event) {
-		event.preventDefault();
-		ThingFunder.new('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {from: web3.eth.accounts[0], value: web3.toWei($('a.btn.blue').attr('data-amount'), 'ether'), data: bytecode, gas: 711546})
-		.then(function (txHash) {
-			console.log('Transaction sent');
-			console.dir(txHash);
-			let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
-			let amount = parseInt($('a.btn.blue').attr('data-amount'))
-			let reward_id = parseInt($('a.btn.blue').attr('data-reward-id'))
-			let number_claimed = parseInt($('a.btn.blue').attr('data-number-claimed'))
-			let project_id = parseInt($('a.btn.blue').attr('data-project-id'))
-			let user_id = parseInt($('a.current_user').attr('data-user-id'))
-			let current_funds = parseInt($('p.funds').text())
-			// debugger
-					        $.ajax({
+					$.ajax({
             			url: '/projects/' + project_id,
             			dataType: 'json',
             			type: 'PATCH',
             			data: {
                 			project: {backer_ids: user_id, funds: current_funds + amount} 
             			},
-            			success: function(data) {
+            				success: function(data) {
                 			alert("Successful");
             			},
             			failure: function() {
@@ -217,15 +194,44 @@ function listenForClicks(ThingFunder) {
                 			reward: {number_claimed: parseInt(`${number_claimed}`) + 1}
             			},
             			success: function(data) {
-                			alert("Successful");
+                			alert("Transaction sent!");
             			},
             			failure: function() {
                 			alert("Unsuccessful");
             			}
         			});
-			reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
-		})
-		.catch(console.error);
-	}
-)}
+					// location.reload();
+				} else {
+					reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
+				}
+			})
+		});
+}
+
+function listenForClicks(ThingFunder) {
+	let buttons = document.querySelectorAll('a.btn.blue');
+	let amount;
+	let reward_id;
+	let number_claimed;
+	let project_id;
+	let user_id = parseInt($('a.current_user').attr('data-user-id'));
+	let current_funds = parseInt($('p.funds').text());
+	for(i = 0; i < buttons.length; i++) {
+		buttons[i].addEventListener('click', function(event) {
+			event.preventDefault();
+			amount = parseInt(this.dataset.amount)
+			reward_id = parseInt(this.dataset.rewardId)
+			number_claimed = parseInt(this.dataset.numberClaimed)
+			project_id = parseInt(this.dataset.projectId)
+			ThingFunder.new('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {from: web3.eth.accounts[0], value: web3.toWei(this.dataset.amount, 'ether'), data: bytecode, gas: 711546})
+			.then(function (txHash) {
+				$('h2.message').html(`Sending transaction... <img src="/loading.gif" alt="Loading" height="62" width="62">`)
+				console.log('Transaction sent');
+				console.dir(txHash);
+				let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
+				reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
+			}).catch(console.error);
+		}
+	)}
+}
 
