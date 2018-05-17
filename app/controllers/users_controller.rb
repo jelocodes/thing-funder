@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 	private 
 
 	def user_params 
-		params.require(:user).permit(:username, :bio, :twitter, :facebook, :website, :tx_hash)
+		params.require(:user).permit(:username, :bio, :twitter, :facebook, :website, :tx_hash, :reward_ids)
 	end
 
 	def set_user 

@@ -94,7 +94,7 @@
  				   <h3><%= reward.name %></h3> 	
  				   <p>$ <%= reward.pledge_requirement %></p>	
  				   <p><%= reward.description %></p>
-                    <h4><%= reward.number_claimed == nil ? 0 : reward.number_claimed %> claimed</h4>	
+                    <h4><%= reward.users.length %> claimed</h4>	
  				   <%= link_to "DONATE", "#", :class => "btn blue new", :data => {:amount => reward.pledge_requirement, :reward_id => reward.id, :number_claimed => reward.number_claimed, :project_id => reward.project.id } %>	                	
    			  </div>
     	   <% end %>
@@ -131,7 +131,7 @@
                     project_backer: {times_backed: 2, contract: $('a.nextInstallment').attr("data-contract")} 
                 },
                     success: function(data) {
-                    alert("Projectbackers times backed and contract updated!");
+                    console.log("Projectbackers times backed and contract updated!");
                 },
                     failure: function() {
                     alert("Unsuccessful");
@@ -148,7 +148,7 @@
                     project_backer: {times_backed: <%= ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed %> + 1} 
                 },
                     success: function(data) {
-                    alert("Times backed updated again!");
+                    console.log("Times backed updated again!");
                 },
                     failure: function() {
                     alert("Unsuccessful");

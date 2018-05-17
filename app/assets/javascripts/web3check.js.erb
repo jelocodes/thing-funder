@@ -187,10 +187,10 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
                   dataType: 'json',
                   type: 'PATCH',
                   data: {
-                      user: {tx_hash: response.contractAddress}
+                      user: {reward_ids: reward_id, tx_hash: response.contractAddress}
                   },
                   success: function(data) {
-                      alert("Temporary tx hash updated!");
+                      console.log("Temporary tx hash updated!");
                       $.ajax({
                         url: '/projects/' + project_id,
                         dataType: 'json',
@@ -199,21 +199,7 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
                           project: {backer_ids: user_id, funds: current_funds + amount} 
                         },
                         success: function(data) {
-                          alert("Projects updated!");                         
-                        },
-                        failure: function() {
-                          alert("Unsuccessful");
-                        }
-                      });
-                      $.ajax({
-                        url: '/rewards/' + reward_id,
-                        dataType: 'json',
-                        type: 'PATCH',
-                        data: {
-                            reward: {number_claimed: parseInt(`${number_claimed}`) + 1}
-                        },
-                        success: function(data) {
-                          alert("Rewards updated!");
+                          console.log("Projects updated!");                         
                         },
                         failure: function() {
                           alert("Unsuccessful");
