@@ -8,10 +8,15 @@ window.addEventListener('load', function() {
 		console.log('Download MetaMask');
 	}
 	$("div.progress-bar.project").attr("style", `width: ${$("span.percentage").text()}`);
+	$("div.progress-bar.donation-status").attr("style", `width: ${$("span.donation-percentage").text()}`);
+  if ($('span.donation-percentage').html() === "0%") {
+    updateTimesBacked();
+  }
 })
 
 const Eth = require('ethjs-query');
 const EthContract = require('ethjs-contract');
+let address;
 
 const bytecode = "0x60806040526040516020806107b783398101806040528101908080519060200190929190505050336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060043073ffffffffffffffffffffffffffffffffffffffff16318115156100ca57fe5b04600281905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f1935050505015801561013b573d6000803e3d6000fd5b50600060038190555060016004819055505061065b8061015c6000396000f3006080604052600436106100a4576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806312065fe0146100a9578063143eef54146100d457806317a090c01461012b5780634feefb041461014257806350655d8c1461016d5780635412f1f3146101c457806378d3ee04146101ce5780637c6f06b1146101e5578063a5014a8214610210578063e5eb6ab51461021a575b600080fd5b3480156100b557600080fd5b506100be610245565b6040518082815260200191505060405180910390f35b3480156100e057600080fd5b506100e9610264565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561013757600080fd5b50610140610289565b005b34801561014e57600080fd5b5061015761035d565b6040518082815260200191505060405180910390f35b34801561017957600080fd5b50610182610367565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6101cc61038d565b005b3480156101da57600080fd5b506101e3610416565b005b3480156101f157600080fd5b506101fa610516565b6040518082815260200191505060405180910390f35b610218610520565b005b34801561022657600080fd5b5061022f610625565b6040518082815260200191505060405180910390f35b60003073ffffffffffffffffffffffffffffffffffffffff1631905090565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561035b57600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f19350505050158015610348573d6000803e3d6000fd5b5060016004600082825401925050819055505b565b6000600354905090565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480156103eb57506000600354115b80156103f8575060025434145b151561040357600080fd5b6001600360008282540392505081905550565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614801561048a575060003073ffffffffffffffffffffffffffffffffffffffff1631115b151561049557600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc3073ffffffffffffffffffffffffffffffffffffffff16319081150290604051600060405180830381858888f19350505050158015610513573d6000803e3d6000fd5b50565b6000600454905090565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614801561057e575060025434145b801561058c57506000600454115b151561059757600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc6002549081150290604051600060405180830381858888f19350505050158015610600573d6000803e3d6000fd5b5060016003600082825401925050819055506001600460008282540392505081905550565b60006002549050905600a165627a7a723058202a28dc6bd3c0e98eeab519f4e987aadf9d7c7836883c6b270c80f28eea22911a0029"
 
@@ -154,13 +159,18 @@ function startApp(web3) {
 	const eth = new Eth(web3.currentProvider);
 	const contract = new EthContract(eth);
 
-	initContract(contract);
+	initContracts(contract);
 }
 
-function initContract(contract) {
+function initContracts(contract) {
 	const ThingFunder = contract(abi)
-
+	let thingFunderInstance;
+	let address = $('.nextInstallment').attr('data-contract')
 	listenForClicks(ThingFunder)
+	if (!!address) {
+		thingFunderInstance = ThingFunder.at(address)
+		nextInstallment(thingFunderInstance)
+	}
 }
 
 function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds) {
@@ -169,37 +179,52 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
 		function(response) {
 			response.json().then(function(data) {
 				if (data.result.status === "1") {
-					web3.eth.getTransactionReceipt(txHash, function(err, res){
-						console.log(res);
-					});
-					$.ajax({
-            			url: '/projects/' + project_id,
-            			dataType: 'json',
-            			type: 'PATCH',
-            			data: {
-                			project: {backer_ids: user_id, funds: current_funds + amount} 
-            			},
-            				success: function(data) {
-                			alert("Successful");
-            			},
-            			failure: function() {
-                			alert("Unsuccessful");
-            			}
-        			});
-        			$.ajax({
-            			url: `/rewards/${reward_id}`,
-            			dataType: 'json',
-            			type: 'PATCH',
-            			data: {
-                			reward: {number_claimed: parseInt(`${number_claimed}`) + 1}
-            			},
-            			success: function(data) {
-                			alert("Transaction sent!");
-            			},
-            			failure: function() {
-                			alert("Unsuccessful");
-            			}
-        			});
+               web3.eth.getTransactionReceipt(txHash, function(err, res){
+                let response = res;
+                console.log(response);
+                $.ajax({
+                  url: `/users/${user_id}`,
+                  dataType: 'json',
+                  type: 'PATCH',
+                  data: {
+                      user: {tx_hash: response.contractAddress}
+                  },
+                  success: function(data) {
+                      alert("Temporary tx hash updated!");
+                      $.ajax({
+                        url: '/projects/' + project_id,
+                        dataType: 'json',
+                        type: 'PATCH',
+                        data: {
+                          project: {backer_ids: user_id, funds: current_funds + amount} 
+                        },
+                        success: function(data) {
+                          alert("Projects updated!");                         
+                        },
+                        failure: function() {
+                          alert("Unsuccessful");
+                        }
+                      });
+                      $.ajax({
+                        url: '/rewards/' + reward_id,
+                        dataType: 'json',
+                        type: 'PATCH',
+                        data: {
+                            reward: {number_claimed: parseInt(`${number_claimed}`) + 1}
+                        },
+                        success: function(data) {
+                          alert("Rewards updated!");
+                        },
+                        failure: function() {
+                          alert("Unsuccessful");
+                        }
+                      });
+                  },
+                  failure: function() {
+                      alert("Unsuccessful");
+                  }
+                });
+              });
 					// location.reload();
 				} else {
 					reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
@@ -209,7 +234,7 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
 }
 
 function listenForClicks(ThingFunder) {
-	let buttons = document.querySelectorAll('a.btn.blue');
+	let buttons = document.querySelectorAll('a.btn.blue.new');
 	let amount;
 	let reward_id;
 	let number_claimed;
@@ -233,5 +258,19 @@ function listenForClicks(ThingFunder) {
 			}).catch(console.error);
 		}
 	)}
+}
+
+function nextInstallment(thingFunderInstance) {
+	let button = document.querySelector('a.nextInstallment');
+	button.addEventListener('click', function(event) {
+		event.preventDefault();
+		thingFunderInstance.payoutToMaker({to: address, from: web3.eth.accounts[0]})
+		.then(function (txHash) {
+			console.log('Transaction sent');
+      updateTimesBacked();
+			console.dir(txHash);			
+		}).catch(console.error);
+	})
+  // make this work
 }
 

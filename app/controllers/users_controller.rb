@@ -15,7 +15,9 @@ class UsersController < ApplicationController
 	end
 
 	def update 
-		authorize @user
+		# authorize @user
+		@user = User.find(params[:id])
+		@user.update(user_params)
 	end
 
 	def destroy 
@@ -25,7 +27,7 @@ class UsersController < ApplicationController
 	private 
 
 	def user_params 
-		params.require(:user).permit(:username, :bio, :twitter, :facebook, :website)
+		params.require(:user).permit(:username, :bio, :twitter, :facebook, :website, :tx_hash)
 	end
 
 	def set_user 
