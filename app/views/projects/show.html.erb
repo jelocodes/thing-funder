@@ -79,7 +79,7 @@
         </div>
         <h3>$ <p style="display:inline;" class="funds"><%= @project.funds %></p></h3>
         <p>pledged out of $ <%= @project.goal %> total</p>
-        <h3><%= @project.backers.length %></h3>
+        <h3 class="backers"><%= @project.backers.length %></h3>
         <p>backers</p>
         <% if days_to_go(@project) < 0 %>
             <h3>Funding period ended.</h3>
@@ -105,8 +105,10 @@
             </div>
             <% if ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed != nil && ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed == 4 %>
                 The project has received all of your donations!
-            <% else %>
+            <% elsif (@project.funds) / (@project.goal) == 1 %>
                 <%= link_to "SEND NEXT INSTALLMENT", "#", :class => "btn blue nextInstallment", :data => {:contract =>ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).contract || current_user.tx_hash } %>
+            <% else %>
+                <p>Thanks for backing! Project opens when the funding period ends!</p> 
             <% end %>
         <% end %> 
         </div>		
@@ -128,10 +130,12 @@
                 dataType: 'json',
                 type: 'PATCH',
                 data: {
-                    project_backer: {times_backed: 2, contract: $('a.nextInstallment').attr("data-contract")} 
+                    project_backer: {times_backed: <%= ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed == nil ? 2 : ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed += 1 %>} 
                 },
                     success: function(data) {
-                    console.log("Projectbackers times backed and contract updated!");
+                    $('div.rewards').html(`<div class="progress-bar donation-status" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: ${data.times_backed / 4 * 100}%"><span class="donation-percentage">${data.times_backed / 4 * 100}%</span></div>`).after('<p>Thanks! Additional funds can be sent when the project reaches its next progress checkpoint! Look out for the next update!</p>')
+                    $('.nextInstallment').remove();                      
+                    console.log("Times backed updated!");
                 },
                     failure: function() {
                     alert("Unsuccessful");
@@ -145,10 +149,17 @@
                 dataType: 'json',
                 type: 'PATCH',
                 data: {
-                    project_backer: {times_backed: <%= ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed %> + 1} 
+                    project_backer: {times_backed: <%= ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed += 1 %> } 
                 },
                     success: function(data) {
-                    console.log("Times backed updated again!");
+                    if (data.times_backed === 4) {
+                        $('div.rewards').html(`<div class="progress-bar donation-status" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: ${data.times_backed / 4 * 100}%"><span class="donation-percentage">${data.times_backed / 4 * 100}%</span></div>`).after('The project has received all of your donations!');
+                        $('.nextInstallment').remove();
+                    } else {
+                        $('div.rewards').html(`<div class="progress-bar donation-status" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: ${data.times_backed / 4 * 100}%"><span class="donation-percentage">${data.times_backed / 4 * 100}%</span></div>`).after('<p>Thanks! Additional funds can be sent when the project reaches its next progress checkpoint! Look out for the next update!</p>');
+                    $('.nextInstallment').remove();                      
+                    }                                         
+                    console.log("Times backed updated +1!");
                 },
                     failure: function() {
                     alert("Unsuccessful");
@@ -158,11 +169,11 @@
     <% end %>
 </script>
 
-<script id=“reward-template” type=“text/x-handlebars-template”>
-    <div class=“entry”>
-        <h1>{{title}}</h1>
-        <div class=“body”>
-            {{body}}
-        </div>
+<script id="reward-template" type="text/x-handlebars-template">
+    <h4>Your Donation Status</h4>
+    <div class="rewards">
+        <div class="progress-bar donation-status" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 25%"><span class="donation-percentage">25%</span></div>
     </div>
+        <p>Thanks for backing! A portion of your donation has been sent to the project! Additional funds can be sent when the project reaches its next progress checkpoint. Stay tuned for the first update!</p>
 </script>
+
