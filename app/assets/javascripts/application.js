@@ -13,8 +13,9 @@
 //= require bootstrap/dist/js/bootstrap
 //= require rails-ujs
 //= require turbolinks
-//= require_tree .
 //= require web3check
+//= require_tree .
+//= require handlebars-v4.0.11
 
 $(document).ready(function() {
 	// add new reward form
