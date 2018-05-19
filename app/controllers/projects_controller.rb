@@ -58,7 +58,11 @@ class ProjectsController < ApplicationController
 		if @project.update_attributes(project_params)
 			@project.add_categories(params["project"]["categories"]) 
 			@project.update(published: true)
-			redirect_to project_path(@project)
+			# redirect_to project_path(@project)
+			respond_to do |f|
+				f.html {redirect_to project_path(@project)}
+				f.json {render :json => @project.to_json(include: :backers)}
+			end
 		else
 			if @project.published? 
 				render 'edit' 

@@ -18,6 +18,8 @@ class UsersController < ApplicationController
 		# authorize @user
 		@user = User.find(params[:id])
 		@user.update(user_params)
+
+		render :json => @user
 	end
 
 	def destroy 

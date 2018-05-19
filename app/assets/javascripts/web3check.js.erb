@@ -190,6 +190,13 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
                       user: {reward_ids: reward_id, tx_hash: response.contractAddress}
                   },
                   success: function(data) {
+                      console.log(data);
+                      let source = $('#reward-template').html();
+                      let template = Handlebars.compile(source);
+                      let html = template(data);
+                      $('div.reward_section').html(html);
+                      $('h2.message').html('Thanks for backing the project!') //Just updating this
+
                       console.log("Temporary tx hash updated!");
                       $.ajax({
                         url: '/projects/' + project_id,
@@ -199,7 +206,10 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
                           project: {backer_ids: user_id, funds: current_funds + amount} 
                         },
                         success: function(data) {
-                          console.log("Projects updated!");                         
+                          console.log(data);
+                          $('p.funds').text(data.funds); //Updating funds from projects
+                          $('div.progress').html(`<div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: ${data.funds / data.goal * 100}%"><span class="percentage">${data.funds / data.goal * 100}%</span></div>`);
+                          $('h3.backers').text(data.backers.length);                       
                         },
                         failure: function() {
                           alert("Unsuccessful");
@@ -211,12 +221,24 @@ function reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id,
                   }
                 });
               });
-					// location.reload();
 				} else {
 					reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
 				}
 			})
 		});
+}
+
+function reload(url) {
+  fetch(url)
+  .then(function(response){
+    response.json().then(function(data) {
+      if (data.result.status === "1") {
+        updateTimesBacked();
+      } else {
+        reload(url);
+      }   
+    })
+  })
 }
 
 function listenForClicks(ThingFunder) {
@@ -247,16 +269,18 @@ function listenForClicks(ThingFunder) {
 }
 
 function nextInstallment(thingFunderInstance) {
-	let button = document.querySelector('a.nextInstallment');
-	button.addEventListener('click', function(event) {
-		event.preventDefault();
-		thingFunderInstance.payoutToMaker({to: address, from: web3.eth.accounts[0]})
-		.then(function (txHash) {
-			console.log('Transaction sent');
-      updateTimesBacked();
-			console.dir(txHash);			
-		}).catch(console.error);
-	})
+  $('div.reward_section').on('click', '.nextInstallment', function(event) {
+    event.preventDefault();
+    address = $(this).attr('data-contract');
+    thingFunderInstance.payoutToMaker({to: address, from: web3.eth.accounts[0]})
+    .then(function (txHash) {
+      let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
+      console.log('Transaction sent');
+      $('div.rewards').html('<p>Sending transaction...</p>')
+      reload(url);
+      console.dir(txHash);      
+    }).catch(console.error);
+  });
+	// button.addEventListener('click', 
   // make this work
 }
-
