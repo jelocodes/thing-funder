@@ -50,6 +50,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+gem 'handlebars_assets'
 gem 'rails-ujs' 
 gem 'devise'
 gem 'pundit'
