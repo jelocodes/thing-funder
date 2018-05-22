@@ -7,13 +7,28 @@ class ProjectsController < ApplicationController
 	def index 
 		if params[:search]
 			@search = params[:search]
-			redirect_to :action => 'results', :anchor => 'projects', search: @search
+			respond_to do |f|
+				f.html {redirect_to :action => 'results', :anchor => 'projects', search: @search}
+				f.json {render :json => @projects.to_json}
+			end
 		elsif params[:sort] === "newest"
 			@projects = Project.published.recent
+			respond_to do |f|
+				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
+				f.html {render 'index'}
+			end			
 		elsif params[:sort] === "popular"
 			@projects = Project.joins(:comments).all
+			respond_to do |f|
+				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
+				f.html {render 'index'}
+			end	
 		elsif params[:sort] === "time_running_out"
 			@projects = Project.time_running_out
+			respond_to do |f|
+				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
+				f.html {render 'index'}
+			end	
 		else
 			@projects = Project.all
 		end
@@ -58,7 +73,6 @@ class ProjectsController < ApplicationController
 		if @project.update_attributes(project_params)
 			@project.add_categories(params["project"]["categories"]) 
 			@project.update(published: true)
-			# redirect_to project_path(@project)
 			respond_to do |f|
 				f.html {redirect_to project_path(@project)}
 				f.json {render :json => @project.to_json(include: :backers)}
