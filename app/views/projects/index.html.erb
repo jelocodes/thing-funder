@@ -51,17 +51,17 @@
   <div id="sort-button" class="container">
     <div class="row">
       <div class="col-sm">
-        <%= button_to "NEWEST PROJECTS", {:action => "index", :anchor => "projects"}, params: {:sort => "newest"}, :class => "btn blue", :method => :get %> 
+
+        <%= button_to "NEWEST PROJECTS", {:action => "index", :anchor => "projects"}, :data => {:sort_by => "newest"}, params: {:sort => "newest"}, :class => "btn blue sorting newest", :method => :get %> 
       </div>
       <div class="col-sm">
-        <%= button_to "MOST POPULAR PROJECTS", {:action => "index", :anchor => "projects"}, params: {:sort => "popular"}, :class => "btn blue", :method => :get %>       
+        <%= button_to "MOST POPULAR PROJECTS", {:action => "index", :anchor => "projects"}, :data => {:sort_by => "popular"}, params: {:sort => "popular"}, :class => "btn blue sorting popular", :method => :get %>       
       </div>
       <div class="col-sm">
-        <%= button_to "TIME RUNNING OUT!", {:action => "index", :anchor => "projects"}, params: {:sort => "time_running_out"}, :class => "btn blue", :method => :get %> 
+        <%= button_to "TIME RUNNING OUT!", {:action => "index", :anchor => "projects"}, :data => {:sort_by => "time_running_out"}, params: {:sort => "time_running_out"}, :class => "btn sorting blue time_running_out", :method => :get %> 
       </div>
     </div>
-<!--     <%= button_to "MOST POPULAR PROJECTS", {action: "new"}, {class: "btn blue"} %>
-    <%= button_to "TIME RUNNING OUT!", {action: "new"}, {class: "btn blue"} %>  --> 
+
   </div>
   <br/>
   <div class="row ">
@@ -70,13 +70,60 @@
       <h3 class="project_title">No Projects Found</h3>
     <% end %>
 
-    <% @projects.all.uniq.each do |project| %>
+    <div class="project-results">
+      <% @projects.all.uniq.each do |project| %>
 
-      <%= render partial: 'projects', locals: { :project => project } %>
+        <%= render partial: 'projects', locals: { :project => project } %>
 
-    <% end %>
+      <% end %>
+    </div>
 
   </div>
 </div>
 
+<script id="entry-template" type="text/x-handlebars-template">      
+  {{#each this}}
+  {{#published this.published}}   
+  <div class="col-sm-12 col-md-4 col-lg-4">
+  <div class="column">
+    <!-- Post-->
+    <div class="post-module">
+    <!-- Thumbnail-->
+    <div class="thumbnail">
+        <img src={{this.image_url}}>
+    </div>
+    <!-- Project Content-->
+    <div class="post-content">
+      <div class="category">
+        {{#each this.categories}}
+          <p>{{this.name}}</p>
+        {{/each}}
+      </div>
+      <h1 class="title">{{this.name}}</h1>
+
+      {{#if_eq this.user.username}}
+        <h2 class="sub_title">By You</h2>
+      {{else}}
+        <h2 class="sub_title">By {{this.user.username}}</h2>
+      {{/if_eq}}
+
+      <div class="progress">
+        <div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{divide this.funds this.goal finished}}%"><span class="percentage">{{divide this.funds this.goal finished}}% funded</span></div>
+      </div>
+      <p class="description">{{this.about}}</p>
+
+        {{#if_eq this.user.username}}
+          <a class="btn blue" href="/projects/{{this.id}}/edit">EDIT</a>
+          <a data-confirm="Are you sure?" class="btn blue" rel="nofollow" data-method="delete" href="/projects/{{this.id}}">DELETE</a>
+        {{else}}
+          <a class="btn blue" href="/projects/{{this.id}}">FUND</a>
+        {{/if_eq}}
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+  {{/published}}
+  {{/each}}
+</script>
 
