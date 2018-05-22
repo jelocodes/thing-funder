@@ -46,4 +46,8 @@ class Project < ApplicationRecord
     self.categories << Category.find_or_create_by(name: category_params) unless category_params.blank?
   end
 
+  def image_url 
+    image.url(:medium)
+  end
+
 end
