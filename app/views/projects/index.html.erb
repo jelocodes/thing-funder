@@ -71,7 +71,7 @@
     <% end %>
 
     <div class="project-results">
-      <% @projects.all.uniq.each do |project| %>
+      <% @projects.uniq.each do |project| %>
 
         <%= render partial: 'projects', locals: { :project => project } %>
 
