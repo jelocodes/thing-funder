@@ -48,5 +48,27 @@ $(document).ready(function() {
 
 	// tabs
 
+	$("div.wrapper").on("submit", 'form#new_comment', function(e){
+		e.preventDefault();
+
+		let $form = $(this); //this always refers to the item that triggered the event
+		let action = $form.attr("action")
+		let params = $form.serialize()
+
+		$.ajax({
+			url: action,
+			data: params,
+ 			dataType: "json",
+			method: "POST"
+		}).success(function(json){
+			console.log(json);
+			let source = $('#comment-section-template').html()
+			let template = Handlebars.compile(source)
+			let html = template(json)
+			$('div.c-section').prepend(html);
+		})
+		
+   })
+
 	
 });

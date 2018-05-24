@@ -111,7 +111,7 @@
         <div class="progress-bar project" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{divide this.funds this.goal finished}}%"><span class="percentage">{{divide this.funds this.goal finished}}% funded</span></div>
       </div>
       <p class="description">{{this.about}}</p>
-
+      <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> {{days_to_go this.deadline finished}} days left </span> <span>{{this.comments.length}} comments</span><br>
         {{#if_eq this.user.username}}
           <a class="btn blue" href="/projects/{{this.id}}/edit">EDIT</a>
           <a data-confirm="Are you sure?" class="btn blue" rel="nofollow" data-method="delete" href="/projects/{{this.id}}">DELETE</a>
@@ -126,4 +126,3 @@
   {{/published}}
   {{/each}}
 </script>
-

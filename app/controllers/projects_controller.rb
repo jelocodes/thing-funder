@@ -11,26 +11,20 @@ class ProjectsController < ApplicationController
 				f.html {redirect_to :action => 'results', :anchor => 'projects', search: @search}
 				f.json {render :json => @projects.to_json}
 			end
-		elsif params[:sort] === "newest"
-			@projects = Project.published.recent
-			respond_to do |f|
-				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
-				f.html {render 'index'}
-			end			
-		elsif params[:sort] === "popular"
-			@projects = Project.joins(:comments).all
-			respond_to do |f|
-				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
-				f.html {render 'index'}
-			end	
-		elsif params[:sort] === "time_running_out"
-			@projects = Project.time_running_out
-			respond_to do |f|
-				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
-				f.html {render 'index'}
-			end	
 		else
-			@projects = Project.all
+			if params[:sort] === "newest"
+				@projects = Project.published.recent		
+			elsif params[:sort] === "popular"
+				@projects = Project.joins(:comments).all.uniq
+			elsif params[:sort] === "time_running_out"
+				@projects = Project.time_running_out
+			else
+				@projects = Project.all
+			end
+			respond_to do |f|
+				f.json {render :json => @projects.to_json(:include => {:categories => {}, :user => {:only => :username}, :comments => {}}, :methods => [:image_url])} 
+				f.html {render 'index'}
+			end	
 		end
 	end
 
@@ -42,6 +36,10 @@ class ProjectsController < ApplicationController
 	def show 
 		@comment = Comment.new
 		session[:return_to] ||= request.referer
+		respond_to do |f|
+			f.json {render :json => @project.to_json(:include => {:user => {:only => :username,  :methods => [:gravatar_url]}, :comments => {:include => {:user => {:methods => [:gravatar_url]}}}, :updates => {}, :backers => {}}, :methods => [:image_url, :funded?])} 
+			f.html {render 'show'}
+		end	
 	end
 
 	def new 

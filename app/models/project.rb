@@ -50,4 +50,13 @@ class Project < ApplicationRecord
     image.url(:medium)
   end
 
+  def funded?
+    self.update(funds: 0) if self.funds == nil 
+    self.funds / self.goal == 1
+  end
+
+  def percent_funded
+   (self.funds.to_f / self.goal.to_f * 100).to_i
+  end
+
 end

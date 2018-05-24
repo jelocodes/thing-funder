@@ -35,6 +35,13 @@ class User < ApplicationRecord
     end
   end
 
+  def gravatar_url
+    email_address = self.email
+    gravatar = Digest::MD5::hexdigest(email_address).downcase 
+    url = "http://gravatar.com/avatar/#{gravatar}.png?s=#64"
+    return !!url ? url : "http://www.gravatar.com/avatar/?d=identicon"
+  end
+
   private 
 
   def set_default_role

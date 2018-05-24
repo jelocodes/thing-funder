@@ -1,5 +1,8 @@
 <div class="wrapper">
-
+<div class="row">
+    <a href="#" class="prevLink" data-id="<%=@project.id%>" >Previous Project</a></h3>
+    <a href="#" class="nextLink" data-id="<%=@project.id%>" >Next Project</a>
+</div>
 <div class="row">
 	<div class="col-md-4 maker">
 		<h4>By <%= @project.user.username %></h4>	
@@ -8,7 +11,8 @@
 	</div>
 
 	<div class="col-md-7 maker">
-		<h1><%= @project.name %></h1>
+        <%= tag.h1 @project.name, :data => {:user_id => @project.id} %>
+		
 		<p><%= @project.tagline %></p>
 	</div>
 </div>
@@ -54,12 +58,13 @@
                             <p><%= link_to("Log in", new_user_session_path) %> or <%= link_to("sign up", new_user_registration_path) %> to comment on this project!</p>
                             <br>
 					<% end %>
-
+                    <div class="c-section">
 					<% @project.comments.each do |comment| %>
 						<h4><%= image_tag gravatar_url(comment.user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
 						<p><%= comment.content %></p>
                         <%= link_to 'Delete', comment_path(comment.id), data: {:confirm => "Are you sure?"}, :method => :delete if current_user && comment.user_id == current_user.id %>						
 					<% end %>
+                    </div>
                 </div>
             </div>
 		</div>
@@ -177,3 +182,95 @@
         <p>Thanks for backing! A portion of your donation has been sent to the project! Additional funds can be sent when the project reaches its next progress checkpoint. Stay tuned for the first update!</p>
 </script>
 
+<!-- ================ -->
+<script id="project-show-template" type="text/x-handlebars-template">
+<div class="row">
+    <a href="#" class="prevLink" data-id="{{this.id}}" >Previous Project</a></h3>
+    <a href="#" class="nextLink" data-id="{{this.id}}" >Next Project</a>
+</div>
+<div class="row">
+    <div class="col-md-4 maker">
+        <h4>By {{this.user.username}}</h4>   
+        <!-- <%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %> -->
+        <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
+    </div>
+
+    <div class="col-md-7 maker">
+        <h1>{{this.name}}</h1>
+        
+        <p>{{this.tagline}}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Campaign</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">FAQ</a></li>
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Updates</a></li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Comments</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <h2>About</h2>
+                    <%= @project.about.html_safe %>
+                    {{{this.about}}}
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    {{{this.faq}}}           
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+                    {{#each updates}}
+                        {{{this.content}}}
+                    {{/each}}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="settings">
+
+                    <% if current_user %>
+                        <form class="new_comment" id="new_comment" action="/comments" accept-charset="UTF-8" method="post">
+                            <input name="utf8" type="hidden" value="✓">
+                            <input type="hidden" name="authenticity_token" value="{{getToken finished}}">
+                            <input value="{{currentUser finished}}" type="hidden" name="comment[user_id]" id="comment_user_id">
+                            <input value="{{this.id}}" type="hidden" name="comment[commentable_id]" id="comment_commentable_id">
+                            <textarea cols="30" rows="5" placeholder="Comment on this project." name="comment[content]" id="comment_content"></textarea>
+                            <input type="submit" name="commit" value="Submit Comment" data-disable-with="Submit Comment">
+                        </form>
+                        <br>
+                        <% else %>
+                            <p><%= link_to("Log in", new_user_session_path) %> or <%= link_to("sign up", new_user_registration_path) %> to comment on this project!</p>
+                            <br>
+                    <% end %>
+                    <div class="c-section">
+                    {{#each comments}}
+                        <h4>
+                            <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
+                            By {{this.user.username}}
+                        </h4> 
+                        <p>{{this.content}}</p>
+                        {{#if_eq_id this.user_id}}
+                            <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/comments/{{this.id}}">Delete</a>
+                        {{/if_eq_id}} 
+                    {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</script>
+
+
+<script id="comment-section-template" type="text/x-handlebars-template">
+        <h4>
+            <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
+            By {{this.user.username}}
+        </h4> 
+        <p>{{this.content}}</p>
+
+        {{#if_eq_id this.user_id}}
+            <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/comments/{{this.id}}">Delete</a>
+        {{/if_eq_id}} 
+</script>
