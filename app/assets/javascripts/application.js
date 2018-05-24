@@ -70,5 +70,18 @@ $(document).ready(function() {
 		
    })
 
+	$("div.wrapper").on("click", 'a.commentDelete', function(e){
+		e.preventDefault();
+		$(this).parent().remove();
+		$.ajax({
+			url: `/comments/${$(this).attr('id')}`,
+			dataType: 'json',
+			type: 'DELETE',
+			success: function(result) {
+				$(this).parent().remove();
+			}
+		})
+	})
+
 	
 });

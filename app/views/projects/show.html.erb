@@ -62,7 +62,7 @@
 					<% @project.comments.each do |comment| %>
 						<h4><%= image_tag gravatar_url(comment.user, 32), alt: "Profile picture" %> By <%= comment.user.username %></h4> 
 						<p><%= comment.content %></p>
-                        <%= link_to 'Delete', comment_path(comment.id), data: {:confirm => "Are you sure?"}, :method => :delete if current_user && comment.user_id == current_user.id %>						
+                        <%= link_to 'Delete', comment_path(comment.id), data: {:confirm => "Are you sure?"}, :class=> 'commentDelete', :id=> 'comment.id', :method => :delete if current_user && comment.user_id == current_user.id %>						
 					<% end %>
                     </div>
                 </div>
@@ -246,14 +246,16 @@
                     <% end %>
                     <div class="c-section">
                     {{#each comments}}
+                        <div class="individualComment">
                         <h4>
-                            <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
+                            <img src="{{this.user.gravatar_url_small}}" alt="User Gravatar">
                             By {{this.user.username}}
                         </h4> 
                         <p>{{this.content}}</p>
                         {{#if_eq_id this.user_id}}
-                            <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/comments/{{this.id}}">Delete</a>
+                            <a data-confirm="Are you sure?" id="{{this.id}}" class="commentDelete" rel="nofollow" href="#">Delete</a>
                         {{/if_eq_id}} 
+                        </div>
                     {{/each}}
                     </div>
                 </div>
@@ -264,13 +266,15 @@
 
 
 <script id="comment-section-template" type="text/x-handlebars-template">
+    <div class="individualComment">
         <h4>
-            <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
+            <img src="{{this.user.gravatar_url_small}}" alt="User Gravatar">
             By {{this.user.username}}
         </h4> 
         <p>{{this.content}}</p>
 
         {{#if_eq_id this.user_id}}
-            <a data-confirm="Are you sure?" rel="nofollow" data-method="delete" href="/comments/{{this.id}}">Delete</a>
+            <a data-confirm="Are you sure?" id="{{this.id}}" class="commentDelete" rel="nofollow" href="#">Delete</a>
         {{/if_eq_id}} 
+    </div>
 </script>

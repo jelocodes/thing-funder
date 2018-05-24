@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
 		if @comment.save 
 			respond_to do |f|
 			f.html {redirect_to project_path(@commentable), notice: 'Your comment was successfully posted!'}
-			f.json {render :json => @comment.to_json(:include => {:user => {:only => :username, :methods => [:gravatar_url]}})}
+			f.json {render :json => @comment.to_json(:include => {:user => {:only => :username, :methods => [:gravatar_url_small]}})}
 			end			
 		else 
 			redirect_to session.delete(:return_to), notice: "Your comment wasn't posted! Try again!"
@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
 	def destroy
 		@project = @comment.commentable
 		@comment.destroy
-		redirect_to project_path(@project), notice: 'Your comment was deleted!'
+		redirect_to project_path(@project)
 	end
 
 	private 

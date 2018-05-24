@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
 		@comment = Comment.new
 		session[:return_to] ||= request.referer
 		respond_to do |f|
-			f.json {render :json => @project.to_json(:include => {:user => {:only => :username,  :methods => [:gravatar_url]}, :comments => {:include => {:user => {:methods => [:gravatar_url]}}}, :updates => {}, :backers => {}}, :methods => [:image_url, :funded?])} 
+			f.json {render :json => @project.to_json(:include => {:user => {:only => :username,  :methods => [:gravatar_url]}, :comments => {:include => {:user => {:methods => [:gravatar_url_small]}}}, :updates => {}, :backers => {}}, :methods => [:image_url, :funded?])} 
 			f.html {render 'show'}
 		end	
 	end
