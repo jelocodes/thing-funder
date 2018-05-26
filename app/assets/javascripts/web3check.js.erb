@@ -242,34 +242,34 @@ function reload(url) {
 }
 
 function listenForClicks(ThingFunder) {
-	let buttons = document.querySelectorAll('a.btn.blue.new');
+	// let buttons = $('a.btn.blue.new');
 	let amount;
 	let reward_id;
 	let number_claimed;
 	let project_id;
 	let user_id = parseInt($('a.current_user').attr('data-user-id'));
-	let current_funds = parseInt($('p.funds').text());
-	for(i = 0; i < buttons.length; i++) {
-		buttons[i].addEventListener('click', function(event) {
-			event.preventDefault();
-			amount = parseInt(this.dataset.amount)
-			reward_id = parseInt(this.dataset.rewardId)
-			number_claimed = parseInt(this.dataset.numberClaimed)
-			project_id = parseInt(this.dataset.projectId)
-			ThingFunder.new('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {from: web3.eth.accounts[0], value: web3.toWei(this.dataset.amount, 'ether'), data: bytecode, gas: 711546})
-			.then(function (txHash) {
-				$('h2.message').html(`Sending transaction... <img src="/loading.gif" alt="Loading" height="62" width="62">`)
-				console.log('Transaction sent');
-				console.dir(txHash);
-				let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
-				reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
-			}).catch(console.error);
-		}
-	)}
+	let current_funds = parseInt($('div.wrapper').find('p.funds').text());
+
+  $('div.wrapper').on('click', 'a.btn.blue.new', function(event){
+      event.preventDefault();
+      amount = parseInt(this.dataset.amount)
+      reward_id = parseInt(this.dataset.rewardId)
+      number_claimed = parseInt(this.dataset.numberClaimed)
+      project_id = parseInt(this.dataset.projectId)
+      ThingFunder.new('0xf17f52151EbEF6C7334FAD080c5704D77216b732', {from: web3.eth.accounts[0], value: web3.toWei(this.dataset.amount, 'ether'), data: bytecode, gas: 711546})
+      .then(function (txHash) {
+        $('h2.message').html(`Sending transaction... <img src="/loading.gif" alt="Loading" height="62" width="62">`)
+        console.log('Transaction sent');
+        console.dir(txHash);
+        let url = `https://api-ropsten.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=${txHash}&apikey=AMCQSDTDGMUA685YDSA7GWFRW1FIBCGGDW`
+        reloadOrNot(txHash, url, amount, reward_id, number_claimed, project_id, user_id, current_funds);
+      }).catch(console.error);
+    })    
 }
 
+
 function nextInstallment(thingFunderInstance) {
-  $('div.reward_section').on('click', '.nextInstallment', function(event) {
+  $('div.wrapper').on('click', '.nextInstallment', function(event) {
     event.preventDefault();
     address = $(this).attr('data-contract');
     thingFunderInstance.payoutToMaker({to: address, from: web3.eth.accounts[0]})

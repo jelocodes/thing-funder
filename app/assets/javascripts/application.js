@@ -17,6 +17,147 @@
 //= require_tree .
 //= require handlebars-v4.0.11
 
+// Handlebar Helpers
+
+Handlebars.registerHelper("divide", function(thing1, thing2) {
+	return Math.floor(Number(thing1) / Number(thing2) * 100);
+});
+
+Handlebars.registerHelper("days_to_go", function(deadline) {
+	let daysLeft = Math.floor((new Date(deadline) - new Date()) / 86400000);
+	return daysLeft > 0 ? daysLeft : 0
+});
+
+Handlebars.registerHelper("if_project_over", function(deadline, opts) {
+	let daysLeft = Math.floor((new Date(deadline) - new Date()) / 86400000);
+	if (daysLeft <= 0) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+});
+
+Handlebars.registerHelper("project_backer_contract", function(project_backers){
+	let contract;
+	project_backers.find(function(backer){
+		if (backer.user_id === $('a.current_user').data('user-id')) {
+			contract = backer.contract;
+    	}
+	})
+	return contract;	
+})
+
+Handlebars.registerHelper("current_user_percentage_backed", function(project_backers){
+	let percentage_backed = 0;
+	project_backers.find(function(backer){
+		if (backer.user_id === $('a.current_user').data('user-id')) {
+			percentage_backed = backer.percentage_backed;
+    	}
+	})
+	return percentage_backed;
+});
+
+Handlebars.registerHelper("if_current_user_has_fully_donated", function(project_backers, opts) {
+	let percentage_backed = 0;
+	project_backers.find(function(backer){
+		if (backer.user_id === $('a.current_user').data('user-id')) {
+			percentage_backed = backer.percentage_backed;
+    	}
+	})
+	if (percentage_backed === 100) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}	
+})
+
+Handlebars.registerHelper("if_current_user_is_not_backer", function(backers, opts){
+	let found = false;
+	backers.forEach(function(backer){
+		if (backer.username === $('a.current_user').data('user-name')) {
+			found = true;
+		}
+	})
+	if (found === false) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+});
+
+Handlebars.registerHelper("if_any_days_left", function(deadline, funded, backers, opts) {
+	let daysLeft = Math.floor((new Date(deadline) - new Date()) / 86400000);
+	let found = false;
+	backers.forEach(function(backer){
+		if (backer.username === $('a.current_user').data('user-name')) {
+			found = true;
+    	}
+	})
+	if (daysLeft > 0 && funded === false && found === false) {
+		return opts.fn(this);  
+	} else {
+		return opts.inverse(this);
+	}
+});
+
+Handlebars.registerHelper("if_funded", function (funded, opts){
+	if (funded === true) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+})
+
+Handlebars.registerHelper("backer_length", function(backers) {
+	return backers.length;
+})
+
+Handlebars.registerHelper("if_backed", function(backers, opts) {
+	let found = false;
+	backers.forEach(function(backer){
+		if (backer.username === $('a.current_user').data('user-name')) {
+			found = true;
+    	}
+	})
+	if (found === true) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}	
+});
+
+Handlebars.registerHelper("if_eq", function(a, opts) {
+	if (a == $('a.current_user').data('user-name')) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+})
+
+Handlebars.registerHelper("if_eq_id", function(a, opts) {
+	if (a == $('a.current_user').data('user-id')) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+})
+
+Handlebars.registerHelper("currentUser", function() {
+	return $('a.current_user').data('user-id')
+})
+
+Handlebars.registerHelper("getToken", function() {
+	return $('head meta:nth-child(3)').attr('content');
+})
+
+Handlebars.registerHelper("published", function(a, opts) {
+	if (a == true) {
+		return opts.fn(this);
+	} else {
+		return opts.inverse(this);
+	}
+})
+
 $(document).ready(function() {
 	// add new reward form
 
@@ -44,44 +185,5 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-
-	// tabs
-
-	$("div.wrapper").on("submit", 'form#new_comment', function(e){
-		e.preventDefault();
-
-		let $form = $(this); //this always refers to the item that triggered the event
-		let action = $form.attr("action")
-		let params = $form.serialize()
-
-		$.ajax({
-			url: action,
-			data: params,
- 			dataType: "json",
-			method: "POST"
-		}).success(function(json){
-			console.log(json);
-			let source = $('#comment-section-template').html()
-			let template = Handlebars.compile(source)
-			let html = template(json)
-			$('div.c-section').prepend(html);
-		})
-		
-   })
-
-	$("div.wrapper").on("click", 'a.commentDelete', function(e){
-		e.preventDefault();
-		$(this).parent().remove();
-		$.ajax({
-			url: `/comments/${$(this).attr('id')}`,
-			dataType: 'json',
-			type: 'DELETE',
-			success: function(result) {
-				$(this).parent().remove();
-			}
-		})
-	})
-
 	
 });

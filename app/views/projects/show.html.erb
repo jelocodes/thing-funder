@@ -6,7 +6,6 @@
 <div class="row">
 	<div class="col-md-4 maker">
 		<h4>By <%= @project.user.username %></h4>	
-		<!-- <%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %> -->
 		<%= image_tag gravatar_url(@project.user, 64), alt: "Profile picture" %>
 	</div>
 
@@ -74,8 +73,10 @@
     	   <h2 class="message">Choose a reward tier below!</h2>
         <% elsif @project.backers.include?(current_user) %>
             <h2 class="message">Thanks for backing the project!</h2>
-        <% elsif current_user %>
-            <p></p>
+        <% elsif current_user && !funded?(@project) %>
+            <h3>Project not funded.</h3>
+        <% elsif current_user && funded?(@project) %>
+            <h3>Project successfully funded!</h3>
         <% else %>
             <h4><%= link_to "Log in to support this!", new_user_session_path %></h4>
         <% end %>
@@ -86,14 +87,14 @@
         <p>pledged out of $ <%= @project.goal %> total</p>
         <h3 class="backers"><%= @project.backers.length %></h3>
         <p>backers</p>
-        <% if days_to_go(@project) < 0 %>
+        <% if days_to_go(@project) <= 0 %>
             <h3>Funding period ended.</h3>
         <% else %>
 		  <h3><%= days_to_go(@project) %></h3>
           <p>days to go</p>
         <% end %>
         <div class="reward_section">
-        <% if !@project.backers.include?(current_user) %>
+        <% if !@project.backers.include?(current_user) && days_to_go(@project) > 0 %>
    		   <% @project.rewards.each do |reward| %>
    			  <div class="card">
  				   <h3><%= reward.name %></h3> 	
@@ -103,7 +104,7 @@
  				   <%= link_to "DONATE", "#", :class => "btn blue new", :data => {:amount => reward.pledge_requirement, :reward_id => reward.id, :number_claimed => reward.number_claimed, :project_id => reward.project.id } %>	                	
    			  </div>
     	   <% end %>
-        <% else %>
+        <% elsif @project.backers.include?(current_user) %>
             <h4>Your Donation Status</h4>
             <div class="rewards">
                 <div class="progress-bar donation-status" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:10%"><span class="donation-percentage"><%= ( ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed == nil ? 25 : (ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed).to_f / 4.to_f * 100 ).to_i %>%</span></div>
@@ -115,7 +116,9 @@
             <% else %>
                 <p>Thanks for backing! Project opens when the funding period ends!</p> 
             <% end %>
-        <% end %> 
+        <% else %> 
+            View other projects <a href="/">here!</a>
+        <% end %>
         </div>		
     </div>
 </div>
@@ -124,7 +127,11 @@
 </div>
 
 <script>
-    <% if ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id) == nil %> 
+    <% if !current_user %> 
+         function updateTimesBacked() {
+            console.log("No user");
+        } 
+    <% elsif ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id) == nil %> 
          function updateTimesBacked() {
             console.log("Nothing to back");
         }   
@@ -182,7 +189,6 @@
         <p>Thanks for backing! A portion of your donation has been sent to the project! Additional funds can be sent when the project reaches its next progress checkpoint. Stay tuned for the first update!</p>
 </script>
 
-<!-- ================ -->
 <script id="project-show-template" type="text/x-handlebars-template">
 <div class="row">
     <a href="#" class="prevLink" data-id="{{this.id}}" >Previous Project</a></h3>
@@ -191,7 +197,6 @@
 <div class="row">
     <div class="col-md-4 maker">
         <h4>By {{this.user.username}}</h4>   
-        <!-- <%= image_tag gravatar_url(current_user, 64), alt: "Profile picture" %> -->
         <img src="{{this.user.gravatar_url}}" alt="User Gravatar">
     </div>
 
@@ -270,7 +275,11 @@
                 {{#if_backed this.backers}}
                     <h2 class="message">Thanks for backing the project!</h2>
                 {{else}}
-                    <p>Boo</p>
+                    {{#if_funded this.funded?}}
+                        <h3>Project successfully funded!</h3>
+                    {{else}}
+                        <h3>Project not funded.</h3>
+                    {{/if_funded}}
                 {{/if_backed}}
             {{/if_any_days_left}}
         <% else %>
@@ -294,15 +303,19 @@
 
         <div class="reward_section">
         {{#if_current_user_is_not_backer this.backers}}
-            {{#each this.rewards}}
-                <div class="card">
-                   <h3>{{this.name}}</h3>  
-                   <p>$ {{this.pledge_requirement}}</p>    
-                   <p>{{this.description}}</p>
-                    <h4>{{this.number_claimed}} claimed</h4> 
-                    <a class="btn blue new" data-amount="{{this.pledge_requirement}}" data-reward-id="{{this.id}}" data-number-claimed="{{this.number_claimed}}" data-project-id="{{this.project_id}}" href="#">DONATE</a>
-                </div>               
-            {{/each}}
+            {{#if_project_over this.deadline}}
+                View other projects <a href="/">here!</a>
+            {{else}}
+                {{#each this.rewards}}
+                    <div class="card">
+                    <h3>{{this.name}}</h3>  
+                    <p>$ {{this.pledge_requirement}}</p>    
+                    <p>{{this.description}}</p>
+                        <h4>{{this.number_claimed}} claimed</h4> 
+                        <a class="btn blue new" data-amount="{{this.pledge_requirement}}" data-reward-id="{{this.id}}" data-number-claimed="{{this.number_claimed}}" data-project-id="{{this.project_id}}" href="#">DONATE</a>
+                    </div>               
+                {{/each}}
+            {{/if_project_over}}
         {{else}}
             <h4>Your Donation Status</h4>
             <div class="rewards">
