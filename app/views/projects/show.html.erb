@@ -1,7 +1,9 @@
 <div class="wrapper">
 <div class="row">
-    <a href="#" class="prevLink" data-id="<%=@project.id%>" >Previous Project</a></h3>
-    <a href="#" class="nextLink" data-id="<%=@project.id%>" >Next Project</a>
+    <div class="project-nav">
+        <a href="#" class="-1" data-id="<%=@project.id%>" >Previous Project</a></h3>
+        <a href="#" class="1" data-id="<%=@project.id%>" >Next Project</a>
+    </div>
 </div>
 <div class="row">
 	<div class="col-md-4 maker">
@@ -111,7 +113,7 @@
             </div>
             <% if ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed != nil && ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).times_backed == 4 %>
                 The project has received all of your donations!
-            <% elsif (@project.funds) / (@project.goal) == 1 %>
+            <% elsif days_to_go(@project) <= 0 %>
                 <%= link_to "SEND NEXT INSTALLMENT", "#", :class => "btn blue nextInstallment", :data => {:contract =>ProjectBacker.find_by(project_id: @project.id, user_id: current_user.id).contract || current_user.tx_hash } %>
             <% else %>
                 <p>Thanks for backing! Project opens when the funding period ends!</p> 
@@ -191,8 +193,10 @@
 
 <script id="project-show-template" type="text/x-handlebars-template">
 <div class="row">
-    <a href="#" class="prevLink" data-id="{{this.id}}" >Previous Project</a></h3>
-    <a href="#" class="nextLink" data-id="{{this.id}}" >Next Project</a>
+    <div class="project-nav">
+        <a href="#" class="-1" data-id="{{this.id}}" >Previous Project</a></h3>
+        <a href="#" class="1" data-id="{{this.id}}" >Next Project</a>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-4 maker">
@@ -333,7 +337,6 @@
         {{/if_current_user_is_not_backer}}
         </div>      
     </div>
-
 </script>
 
 
