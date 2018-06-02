@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
 	} else {
 		// Warn the user that they need to get a web3 browser
 		// Or install MetaMask, maybe with a nice graphic.
-		console.log('Download MetaMask');
+		alert('Please download MetaMask to use this dApp');
 	}
 	$("div.progress-bar.project").attr("style", `width: ${$("span.percentage").text()}`);
 	$("div.progress-bar.donation-status").attr("style", `width: ${$("span.donation-percentage").text()}`);
@@ -242,7 +242,6 @@ function reload(url) {
 }
 
 function listenForClicks(ThingFunder) {
-	// let buttons = $('a.btn.blue.new');
 	let amount;
 	let reward_id;
 	let number_claimed;
@@ -281,6 +280,4 @@ function nextInstallment(thingFunderInstance) {
       console.dir(txHash);      
     }).catch(console.error);
   });
-	// button.addEventListener('click', 
-  // make this work
 }

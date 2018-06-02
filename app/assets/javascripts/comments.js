@@ -15,11 +15,11 @@ Comment.prototype.renderCommentMarkup = function() {
 
 $(function() {
 
-	Comment.templateSource = $("#comment-section-template").html();
- 	Comment.template = Handlebars.compile(Comment.templateSource);
-
 	$("div.wrapper").on("submit", 'form#new_comment', function(e){
 		e.preventDefault();
+
+		Comment.templateSource = $("#comment-section-template").html();
+ 		Comment.template = Handlebars.compile(Comment.templateSource);
 
 		let $form = $(this); 
 		let action = $form.attr("action")
@@ -43,10 +43,7 @@ $(function() {
 		$.ajax({
 			url: `/comments/${$(this).attr('id')}`,
 			dataType: 'json',
-			type: 'DELETE',
-			success: function(result) {
-				$(this).parent().remove();
-			}
+			type: 'DELETE'
 		})
 	})
 });

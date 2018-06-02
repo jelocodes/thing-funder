@@ -27,7 +27,7 @@ Project.prototype.renderProjectMarkup = function() {
 	return Project.template(this);
 }
 
-$(function() {
+$(function() {	
  	$('input.btn.blue.sorting').on('click', function(event) {
    		event.preventDefault();
 
@@ -46,12 +46,12 @@ $(function() {
    		})
  	});
 
- 	Project.templateSource = $("#project-show-template").html();
- 	Project.template = Handlebars.compile(Project.templateSource);
-
-	$('div.wrapper').on('click', 'a.prevLink', function(event) {
+	$('div.wrapper').on('click', '.project-nav a', function(event) {
 		event.preventDefault();
-		$.getJSON(`/projects/${$(this).data('id') - 1}`, function(data) {
+		$.getJSON(`/projects/${$(this).data('id') + parseInt($(this).attr('class'))}`, function(data) {
+
+		 	Project.templateSource = $("#project-show-template").html();
+ 			Project.template = Handlebars.compile(Project.templateSource);
 
 			let project = new Project(data);
 			let projectMarkup = project.renderProjectMarkup();
@@ -61,17 +61,5 @@ $(function() {
 		})	
 	})
 
-
-	$('div.wrapper').on('click', 'a.nextLink', function(event) {
-		event.preventDefault();
-		$.getJSON(`/projects/${$(this).data('id') + 1}`, function(data) {
-
-			let project = new Project(data);
-			let projectMarkup = project.renderProjectMarkup();
-
-			$('div.wrapper').html('')
-			$('div.wrapper').html(projectMarkup)		
-		})	
-	})
 });
 
